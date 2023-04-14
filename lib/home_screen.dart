@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration:
                 const InputDecoration(label: Text('Enter Server Address')),
           ),
-          Text(server.socket != null ? 'Connected' : 'Not Connected'),
+          // Text(server.socket != null ? 'Connected' : 'Not Connected'),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
