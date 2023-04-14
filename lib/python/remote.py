@@ -1,4 +1,5 @@
 import socket
+from time import sleep
 from pyautogui import hotkey
 import mss
 import base64
@@ -28,6 +29,7 @@ while (True):
                         if (len(r) > 0):
                             hotkey(r)
 
+                    sleep(0.1)
                     sct.shot(output='screenshot.png')
                     with open('screenshot.png', 'rb') as f:
                         image_bytes = f.read()
