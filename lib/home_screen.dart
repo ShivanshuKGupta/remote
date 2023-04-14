@@ -89,24 +89,27 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   IconButton(
-                    onPressed: () => bttn('up'),
+                    onPressed: server.socket == null ? null : () => bttn('up'),
                     icon: const Icon(Icons.arrow_drop_up),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        onPressed: () => bttn('left'),
+                        onPressed:
+                            server.socket == null ? null : () => bttn('left'),
                         icon: const Icon(Icons.arrow_left),
                       ),
                       IconButton(
-                        onPressed: () => bttn('right'),
+                        onPressed:
+                            server.socket == null ? null : () => bttn('right'),
                         icon: const Icon(Icons.arrow_right),
                       ),
                     ],
                   ),
                   IconButton(
-                    onPressed: () => bttn('down'),
+                    onPressed:
+                        server.socket == null ? null : () => bttn('down'),
                     icon: const Icon(Icons.arrow_drop_down),
                   ),
                 ],
