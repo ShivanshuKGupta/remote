@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:remote/home_screen.dart';
 
 class Server {
   Socket? socket;
@@ -10,12 +11,17 @@ class Server {
   Image? image;
 
   void connect(String addr) {
+    if (socket != null) disconnect();
     try {
       Socket.connect(addr, 8080).then((value) {
+        print("Connection to $value successful.");
         socket = value;
+        refresh!();
       });
     } catch (e) {
       print('connection error: $e');
+      socket = null;
+      refresh!();
     }
   }
 
@@ -35,19 +41,16 @@ class Server {
   void receiveImage() {
     try {
       while (true) {
+        print("Trying to listen");
         socket?.listen((data) {
           print('listen is called');
           imageBytes = base64.decode(utf8.decode(data));
           image = Image.memory(imageBytes!);
+          refresh!();
         });
       }
     } catch (e) {
-      if (imageBytes != null) {
-        print('ImageBytes: $imageBytes');
-        image = Image.memory(imageBytes!);
-      } else {
-        print('error receiving image: $e');
-      }
+      print('error receiving image: $e');
     }
   }
 
@@ -63,5 +66,7 @@ class Server {
 
   void disconnect() {
     socket?.close();
+    socket = null;
+    refresh!();
   }
 }

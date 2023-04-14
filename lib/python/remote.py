@@ -33,8 +33,6 @@ while (True):
                         image_bytes = f.read()
 
                     image_base64 = base64.b64encode(image_bytes)
-
                     data_len = str(len(image_base64)).encode()
-
                     conn.sendall(image_base64)
                     print('screenshot sent!')

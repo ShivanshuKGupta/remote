@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:remote/server_tools.dart';
 
-class HomeScreen extends StatefulWidget {
-  Image? img;
+void Function()? refresh;
 
+class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -15,6 +15,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _HomeScreenState() {
     serverAddr.text = '192.168.10.126';
+    refresh = _setState;
+  }
+
+  void _setState() {
+    setState(() {});
   }
 
   void bttn(String msg) {
@@ -23,9 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // server.receiveString();
       server.receiveImage();
       if (_showImage) {
-        setState(() {
-          widget.img = server.image;
-        });
+        server.image;
       }
     }
   }
@@ -47,9 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (widget.img != null && _showImage)
-            InteractiveViewer(child: widget.img!),
+          if (server.image != null && _showImage)
+            Expanded(child: InteractiveViewer(child: server.image!)),
           TextField(
             controller: serverAddr,
             decoration:
@@ -62,19 +66,19 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                    child: const Text('Connect'),
-                    onPressed: () {
-                      setState(() {
-                        server.connect(serverAddr.text);
-                      });
-                    }),
+                    onPressed: server.socket != null
+                        ? null
+                        : () {
+                            server.connect(serverAddr.text);
+                          },
+                    child: const Text('Connect')),
                 ElevatedButton(
-                    child: const Text('Disconnect'),
-                    onPressed: () {
-                      setState(() {
-                        server.disconnect();
-                      });
-                    }),
+                    onPressed: server.socket == null
+                        ? null
+                        : () {
+                            server.disconnect();
+                          },
+                    child: const Text('Disconnect')),
               ],
             ),
           ),
