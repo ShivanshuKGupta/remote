@@ -1,16 +1,15 @@
 # remote
 
-A new Flutter project.
+A flutter application to act as the remote for your laptop
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Download this project and download the python script as well.
+Build an android application and run it.
+While also, download the python script and run it on your pc.
+The app requires you to enter your ip address as shown while running the python script.
+Enter your ip address and click [connect].
 
-A few resources to get you started if this is your first Flutter project:
+And that's it now you can use your phone as a remote for your laptop.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: Your laptop and phone needs to be connected to the same wifi.
