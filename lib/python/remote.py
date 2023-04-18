@@ -4,8 +4,15 @@ from pyautogui import hotkey
 import mss
 import base64
 
-HOST = socket.gethostbyname(socket.gethostname())
-PORT = 8080
+DEFHOST = socket.gethostbyname(socket.gethostname())
+# DEFHOST = '192.168.10.126'
+
+HOST = input(f"Enter your ip address [default={DEFHOST}]:")
+if (len(HOST) == 0):
+    HOST = DEFHOST
+PORT = input('Enter port [default=8080]:')
+if (len(PORT) == 0):
+    PORT = 8080
 
 while (True):
     with mss.mss() as sct:
@@ -27,7 +34,7 @@ while (True):
                     responses = response.split(sep=',')
                     for r in responses:
                         if (len(r) > 0):
-                            hotkey(r)
+                            hotkey(*r.split('+'))
 
                     sleep(0.1)
                     sct.shot(output='screenshot.png')
@@ -35,11 +42,11 @@ while (True):
                         image_bytes = f.read()
 
                     image_base64 = base64.b64encode(image_bytes)
-                    # data_len = str(len(image_base64)).encode()
-                    # print(f"sending data of length: {data_len}")
                     separator = '\''.encode()
+
                     conn.sendall(separator)
                     print(f"sent: {separator}")
                     conn.sendall(image_base64)
                     conn.sendall(separator)
+
                     print('screenshot sent!')
