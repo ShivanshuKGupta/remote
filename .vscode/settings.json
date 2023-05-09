@@ -1,0 +1,3 @@
+{
+    "code-runner.customCommand": "python lib\\python\\remote.py"
+}
