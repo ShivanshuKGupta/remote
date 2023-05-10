@@ -21,6 +21,13 @@ class SettingsScreen extends ConsumerWidget {
                 ref.read(settings.notifier).notifyListeners();
               }),
           const Divider(),
+          SwitchListTile(
+              title: const Text('Receive Image'),
+              value: ref.watch(settings).receiveImage,
+              onChanged: (value) {
+                ref.read(settings).receiveImage = value;
+                ref.read(settings.notifier).notifyListeners();
+              }),
         ],
       ),
     );

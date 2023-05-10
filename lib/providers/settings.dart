@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class _Settings {
   bool darkMode = false;
+  bool receiveImage = true;
   String serverAddr = "";
   String portNo = "";
 }
@@ -15,6 +16,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
   Future<bool> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     state.darkMode = prefs.getBool('darkMode') ?? false;
+    state.receiveImage = prefs.getBool('receiveImage') ?? true;
     state.serverAddr = prefs.getString('serverAddr') ?? "192.168.";
     state.portNo = prefs.getString('portNo') ?? "8080";
     notifyListeners();
@@ -25,6 +27,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     prefs.setBool('darkMode', state.darkMode);
+    prefs.setBool('receiveImage', state.receiveImage);
     prefs.setString('serverAddr', state.serverAddr);
     prefs.setString('portNo', state.portNo);
     return true;

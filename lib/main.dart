@@ -27,7 +27,7 @@ class MyApp extends ConsumerWidget {
             bodyColor: darkMode ? Colors.white : Colors.black,
             displayColor: darkMode ? Colors.white : Colors.black,
           )),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
