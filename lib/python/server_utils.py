@@ -6,6 +6,7 @@ import json
 import custom_commands
 import keyboard_commands
 import os_commands
+import mouse_commands
 
 # tools
 from tools import dbg
@@ -37,7 +38,9 @@ def serve_connection(conn: socket):
                 response: map = json.loads(each_command)
             except:
                 dbg(f'error decoding json string: {response}')
+                break
 
+            # reacting to the input
             keys = response.keys()
             if ('settings' in keys):
                 settings.initialize(response['settings'])
@@ -47,23 +50,10 @@ def serve_connection(conn: socket):
                 custom_commands.execute(response['custom'])
             if ('os' in keys):
                 os_commands.execute(response['os'])
+            if ('mouse' in keys):
+                mouse_commands.execute(json.loads(response['mouse']))
 
-            # json.dumps({})
-            # json.loads(str)
-
-            # responses = response.split(sep=',')
-            # for r in responses:
-            #     if (len(r) > 0):
-            #         if (len(r) > 3 and r[0:3] == 'os:'):
-            #             cmd = r[3::]
-            #             os_commands.execute(cmd)
-            #         elif (len(r) > len('custom:') and r[0:len('custom:')] == 'custom:'):
-            #             cmd = r[len('custom:')::]
-            #             custom_commands.execute(cmd)
-            #         else:
-            #             keyboard_commands.execute(r)
-
-        if (settings.receiveImage):
+        if (settings.receiveImage and ('mouse' not in keys)):
             sleep(settings.delayTime)
             screenshot.send(conn)
 

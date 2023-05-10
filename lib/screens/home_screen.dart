@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remote/providers/settings.dart';
 import 'package:remote/screens/main_drawer.dart';
-import 'package:remote/screens/server_screen.dart';
+import 'package:remote/screens/connection_screen.dart';
 import 'package:remote/widgets/pc_screen.dart';
 import 'package:remote/providers/server.dart';
 import 'package:remote/widgets/remote_buttons.dart';
@@ -20,6 +21,20 @@ class HomeScreen extends ConsumerWidget {
             ? const Text('Connect')
             : const Text('Remote'),
         actions: [
+          if (ref.watch(server) != null)
+            IconButton(
+              onPressed: () {
+                ref.read(settings).mouseMode = !ref.read(settings).mouseMode;
+                ref.read(settings.notifier).notifyListeners();
+                ref.read(server.notifier).keyboard('');
+              },
+              color: ref.watch(settings).mouseMode
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
+              icon: Icon(ref.read(settings).mouseMode
+                  ? Icons.mouse_rounded
+                  : Icons.mouse_outlined),
+            ),
           if (ref.watch(server) != null)
             IconButton(
               onPressed: () {

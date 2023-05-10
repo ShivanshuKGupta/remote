@@ -25,8 +25,7 @@ while (True):
     print(f'Client connected from {addr}')
 
     # serving the client
-    with conn:
-        server_utils.serve_connection(conn)
+    server_utils.serve_connection(conn)
 
     # service finished / disconnected
     conn.close()

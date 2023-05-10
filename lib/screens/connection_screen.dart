@@ -33,6 +33,7 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
               keyboardType: TextInputType.number,
               style: Theme.of(context).textTheme.bodyLarge,
               decoration: const InputDecoration(
+                  hintText: "eg, 192.168.10.74",
                   label: Text('Enter Server Address'),
                   alignLabelWithHint: true),
             ),
@@ -42,7 +43,7 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
               controller: _portNo,
               // enabled: ref.watch(server) == null,
               decoration: const InputDecoration(
-                  hintText: '8080', label: Text('Enter Port Number')),
+                  hintText: 'eg, 8080', label: Text('Enter Port Number')),
             ),
             const SizedBox(
               height: 15,

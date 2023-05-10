@@ -83,6 +83,26 @@ class _Server extends StateNotifier<Socket?> {
   void keyboard(String key) => send("${json.encode({"keyboard": key})};");
   void os(String cmd) => send("${json.encode({"os": cmd})};");
   void custom(String cmd) => send("${json.encode({"custom": cmd})};");
+  void mouse(double x, double y) {
+    if (x != double.infinity && y != double.infinity) {
+      print("sending :${json.encode(
+        {
+          "mouse": json.encode({
+            "x": x,
+            "y": y,
+          }),
+        },
+      )};");
+      send("${json.encode(
+        {
+          "mouse": json.encode({
+            "x": x,
+            "y": y,
+          }),
+        },
+      )};");
+    }
+  }
 
   Future<bool> disconnect() async {
     if (state == null) return false;

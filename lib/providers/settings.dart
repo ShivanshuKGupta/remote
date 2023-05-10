@@ -8,6 +8,7 @@ class _Settings {
   bool receiveImage = true;
   String serverAddr = "";
   String portNo = "";
+  bool mouseMode = false;
   double delayTime = 0.1;
 }
 
@@ -23,6 +24,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "serverAddr": state.serverAddr,
       "portNo": state.portNo,
       "delayTime": state.delayTime,
+      "mouseMode": state.mouseMode,
     });
   }
 
@@ -33,15 +35,12 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.serverAddr = settings["serverAddr"] ?? "192.168.";
     state.portNo = settings["portNo"] ?? "8080";
     state.delayTime = settings["delayTime"] ?? 0.1;
+    state.mouseMode = settings["mouseMode"] ?? false;
   }
 
   Future<bool> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     decodeAndSet(prefs.getString('settings') ?? "{}");
-    // state.darkMode = prefs.getBool('darkMode') ?? false;
-    // state.receiveImage = prefs.getBool('receiveImage') ?? true;
-    // state.serverAddr = prefs.getString('serverAddr') ?? "192.168.";
-    // state.portNo = prefs.getString('portNo') ?? "8080";
     notifyListeners();
     return true;
   }
@@ -50,10 +49,6 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     prefs.setString('settings', encode());
-    // prefs.setBool('darkMode', state.darkMode);
-    // prefs.setBool('receiveImage', state.receiveImage);
-    // prefs.setString('serverAddr', state.serverAddr);
-    // prefs.setString('portNo', state.portNo);
     return true;
   }
 
