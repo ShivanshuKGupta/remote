@@ -21,7 +21,7 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
   @override
   Widget build(BuildContext context) {
     _serverAddr.text = ref.watch(settings).serverAddr;
-    _portNo.text = ref.watch(settings).portNo;
+    _portNo.text = ref.read(settings).portNo;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -53,9 +53,8 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
                   : () {
                       setState(() => _isLoading = true);
                       try {
-                        ref.read(settings.notifier).state.serverAddr =
-                            _serverAddr.text;
-                        ref.read(settings.notifier).state.portNo = _portNo.text;
+                        ref.read(settings).serverAddr = _serverAddr.text;
+                        ref.read(settings).portNo = _portNo.text;
                         ref.read(settings.notifier).saveSettings();
                         ref
                             .read(server.notifier)
@@ -72,6 +71,11 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
                                 ));
                             setState(() => _isLoading = false);
                           }
+                          print(
+                              "Sending settings: ${ref.read(settings.notifier).encode()}");
+                          ref
+                              .read(server.notifier)
+                              .send(ref.read(settings.notifier).toString());
                         });
                       } catch (e) {
                         showMsg(context, e.toString(),

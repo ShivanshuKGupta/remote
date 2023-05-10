@@ -27,7 +27,7 @@ class OsButtons extends ConsumerWidget {
               onPressed: ref.read(server) == null
                   ? null
                   : () {
-                      ref.read(server.notifier).bttn('os:echo Hello World');
+                      ref.read(server.notifier).os('echo Hello World');
                     },
               icon: const Icon(
                 Icons.abc,
@@ -40,7 +40,7 @@ class OsButtons extends ConsumerWidget {
               onPressed: ref.read(server) == null
                   ? null
                   : () {
-                      ref.read(server.notifier).bttn('custom:lock');
+                      ref.read(server.notifier).custom('lock');
                     },
               icon: const Icon(
                 Icons.lock_rounded,
@@ -56,7 +56,7 @@ class OsButtons extends ConsumerWidget {
                   ? null
                   : () {
                       Navigator.of(context).pop();
-                      ref.read(server.notifier).bttn('os:shutdown /s');
+                      ref.read(server.notifier).os('shutdown /s');
                     },
               icon: const Icon(
                 Icons.close_rounded,

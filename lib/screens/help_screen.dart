@@ -19,7 +19,7 @@ class HelpScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () => launchUrl(
                   Uri.parse(
-                      'https://github.com/ShivanshuKGupta/remote/blob/master/lib/python/remote.py'),
+                      'https://github.com/ShivanshuKGupta/remote/blob/master/lib/python/main.py'),
                 ),
                 child: const Text(
                   'github.com/ShivanshuKGupta/remote/blob/master/lib/python/remote.py',

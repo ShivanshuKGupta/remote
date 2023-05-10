@@ -3,12 +3,9 @@ import os
 import sys
 from tools import *
 
-developer_mode: bool = False
-
 
 def dbg(msg):
-    if (developer_mode):
-        print(msg)
+    print(msg)
 
 
 def get_ip_addresses():
@@ -37,11 +34,10 @@ def get_ip_addresses():
     return addresses
 
 
-def setHostNPort(addresses, DEF_HOST, DEF_DELAY_TIME, DEF_PORT):
+def setHostNPort(addresses, DEF_HOST, DEF_PORT):
     developer_mode = False
     port = DEF_PORT
     host = DEF_HOST
-    delayTime = DEF_DELAY_TIME
 
     if (len(sys.argv) > 1):
         for arg in sys.argv:
@@ -67,10 +63,4 @@ def setHostNPort(addresses, DEF_HOST, DEF_DELAY_TIME, DEF_PORT):
             port = 8080
         else:
             port = int(port)
-        delayTime = input(
-            f'Enter delayTime (in sec)[default={DEF_DELAY_TIME}]:')
-        if (len(delayTime) == 0):
-            delayTime = DEF_DELAY_TIME
-        else:
-            delayTime = float(delayTime)
-    return host, delayTime, port
+    return host, port

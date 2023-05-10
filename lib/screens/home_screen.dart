@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
           if (ref.watch(server) != null)
             IconButton(
               onPressed: () {
-                ref.read(server.notifier).bttn('');
+                ref.read(server.notifier).keyboard('');
               },
               icon: const Icon(Icons.refresh_rounded),
             ),

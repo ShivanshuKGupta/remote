@@ -27,18 +27,19 @@ class RemoteButtons extends ConsumerWidget {
                       TextButton(
                           onPressed: ref.watch(server) == null
                               ? null
-                              : () => ref.read(server.notifier).bttn('esc'),
+                              : () => ref.read(server.notifier).keyboard('esc'),
                           child: const Text('esc')),
                       IconButton(
                         onPressed: ref.watch(server) == null
                             ? null
-                            : () => ref.read(server.notifier).bttn('up'),
+                            : () => ref.read(server.notifier).keyboard('up'),
                         icon: const Icon(Icons.arrow_drop_up),
                       ),
                       TextButton(
                           onPressed: ref.watch(server) == null
                               ? null
-                              : () => ref.read(server.notifier).bttn('ctrl+f5'),
+                              : () =>
+                                  ref.read(server.notifier).keyboard('ctrl+f5'),
                           child: const Text('ctrl+F5')),
                     ],
                   ),
@@ -48,18 +49,18 @@ class RemoteButtons extends ConsumerWidget {
                       IconButton(
                         onPressed: ref.watch(server) == null
                             ? null
-                            : () => ref.read(server.notifier).bttn('left'),
+                            : () => ref.read(server.notifier).keyboard('left'),
                         icon: const Icon(Icons.arrow_left),
                       ),
                       TextButton(
                           onPressed: ref.watch(server) == null
                               ? null
-                              : () => ref.read(server.notifier).bttn('f5'),
+                              : () => ref.read(server.notifier).keyboard('f5'),
                           child: const Text('F5')),
                       IconButton(
                         onPressed: ref.watch(server) == null
                             ? null
-                            : () => ref.read(server.notifier).bttn('right'),
+                            : () => ref.read(server.notifier).keyboard('right'),
                         icon: const Icon(Icons.arrow_right),
                       ),
                     ],
@@ -67,7 +68,7 @@ class RemoteButtons extends ConsumerWidget {
                   IconButton(
                     onPressed: ref.watch(server) == null
                         ? null
-                        : () => ref.read(server.notifier).bttn('down'),
+                        : () => ref.read(server.notifier).keyboard('down'),
                     icon: const Icon(Icons.arrow_drop_down),
                   ),
                 ],

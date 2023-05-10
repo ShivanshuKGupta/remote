@@ -39,7 +39,6 @@ class _Server extends StateNotifier<Socket?> {
                 : Uint8List(0);
           }
         });
-        bttn('');
         return true;
       });
     } catch (e) {
@@ -81,9 +80,9 @@ class _Server extends StateNotifier<Socket?> {
     return true;
   }
 
-  void bttn(String msg) {
-    send('$msg,');
-  }
+  void keyboard(String key) => send("${json.encode({"keyboard": key})};");
+  void os(String cmd) => send("${json.encode({"os": cmd})};");
+  void custom(String cmd) => send("${json.encode({"custom": cmd})};");
 
   Future<bool> disconnect() async {
     if (state == null) return false;
