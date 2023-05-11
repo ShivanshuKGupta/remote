@@ -5,8 +5,6 @@ import server_utils
 # Tools
 from tools import setHostNPort, get_ip_addresses, dbg
 
-print("In case, you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
-
 # Setting host and port - If automatic discovery is implemented in near
 # future then the required should be coded here in the below function
 host, port = setHostNPort(addresses=get_ip_addresses(
@@ -22,6 +20,7 @@ while (True):
     sct.listen()
 
     # blocking until a client is connected
+    print("In case you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
     dbg(f'Server listening on {host}:{port}')
     print(f"Enter {host} in the 'Enter Server Address' Field in the app")
     print(f"Enter {port} in the 'Enter Port Number' Field in the app")

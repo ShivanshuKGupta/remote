@@ -1,11 +1,13 @@
 import pyautogui as pg
 
+from tools import dbg
+
 
 def execute(cmd):
     x, y = pg.position()
     x += int(cmd['x'])  # change in the position of the pointer along x-axis
     y += int(cmd['y'])  # change in the position of the pointer along y-axis
-    print(f"x={x}", f"y={y}")
+    dbg(f"x={x} y={y}")
     WIDTH, HEIGHT = pg.size()
     # Failsafe protection
     if (x >= WIDTH-1):

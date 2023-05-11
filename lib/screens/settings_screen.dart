@@ -19,6 +19,10 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           SwitchListTile(
               title: const Text('Dark Mode'),
+              subtitle: Text(
+                'Reduce Glare',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
               value: ref.watch(settings).darkMode,
               onChanged: (value) {
                 ref.read(settings).darkMode = value;
@@ -30,6 +34,11 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           SwitchListTile(
               title: const Text('Receive Image'),
+              isThreeLine: true,
+              subtitle: Text(
+                'This disables the screenshot receiving feature, can improve performance',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
               value: ref.watch(settings).receiveImage,
               onChanged: (value) {
                 ref.read(settings).receiveImage = value;
@@ -39,28 +48,28 @@ class SettingsScreen extends ConsumerWidget {
                     .send(ref.read(settings.notifier).toString());
               }),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.only(left: 17.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Response Delay',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const DelaySlider(),
-              ],
+          ListTile(
+            title: const Text('Response Delay'),
+            subtitle: Text(
+              'Delay in receiving the screenshot, so that you may get expected image after a slide change',
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
+            isThreeLine: true,
           ),
+          const _DelaySlider(),
           const Divider(),
           ListTile(
+              leading: const Icon(Icons.refresh_rounded),
+              iconColor: Colors.redAccent,
               title: const Text('Reset Saved Settings'),
-              onTap: () {
-                ref.read(server.notifier).disconnect();
-                ref.read(settings.notifier).clearSettings();
-                ref.read(remoteButtons.notifier).loadButtons();
-                Navigator.of(context).pop();
+              textColor: Colors.redAccent,
+              onTap: () async {
+                await ref.read(server.notifier).disconnect();
+                await ref.read(settings.notifier).clearSettings();
+                await ref.read(remoteButtons.notifier).loadButtons();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               }),
           const Divider(),
         ],
@@ -69,14 +78,14 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-class DelaySlider extends ConsumerStatefulWidget {
-  const DelaySlider({super.key});
+class _DelaySlider extends ConsumerStatefulWidget {
+  const _DelaySlider({super.key});
 
   @override
-  ConsumerState<DelaySlider> createState() => _DelaySliderState();
+  ConsumerState<_DelaySlider> createState() => _DelaySliderState();
 }
 
-class _DelaySliderState extends ConsumerState<DelaySlider> {
+class _DelaySliderState extends ConsumerState<_DelaySlider> {
   @override
   void initState() {
     super.initState();

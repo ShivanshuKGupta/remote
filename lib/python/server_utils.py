@@ -1,3 +1,4 @@
+import os
 from time import sleep  # for delay in between command execution and taking screenshot
 import socket
 import json
@@ -22,9 +23,11 @@ def serve_connection(conn: socket):
             data = conn.recv(1024)
         except:
             print(f"Connection was forcibly closed.")
+            os.system('cls')
             break
         if not data:
             print('Disconnected')
+            os.system('cls')
             break
 
         # decoding the data received

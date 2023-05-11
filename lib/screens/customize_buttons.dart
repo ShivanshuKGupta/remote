@@ -14,7 +14,6 @@ final allButtonsList = [
   "volumedown",
   "prevtrack",
   "playpause",
-  "pause",
   "nexttrack",
   "stop",
   "volumemute",
@@ -23,7 +22,6 @@ final allButtonsList = [
   "prtscr",
   "apps",
   "space",
-  "help",
   "tab",
   "add",
   "backspace",
@@ -151,6 +149,7 @@ final allButtonsList = [
   "hanguel",
   "hangul",
   "hanja",
+  "help",
   "insert",
   "junja",
   "kana",
@@ -175,6 +174,7 @@ final allButtonsList = [
   "numlock",
   "pagedown",
   "pageup",
+  "pause",
   "pgdn",
   "pgup",
   "print",
@@ -230,7 +230,7 @@ class CustomizeQuickButtons extends ConsumerWidget {
                         itemCount: buttons.length,
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 100, childAspectRatio: 3),
+                                maxCrossAxisExtent: 80, childAspectRatio: 2),
                         itemBuilder: (ctx, index) {
                           final String bttnTxt = buttons[index];
                           final icon = morph(bttnTxt);

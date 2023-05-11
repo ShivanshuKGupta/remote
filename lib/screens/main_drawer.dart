@@ -11,6 +11,7 @@ class MainDrawer extends StatelessWidget {
 
   Widget widgetList(context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.all(40),
@@ -31,26 +32,8 @@ class MainDrawer extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              GestureDetector(
-                child: ShaderMask(
-                  blendMode: BlendMode.srcATop,
-                  shaderCallback: (rect) {
-                    return LinearGradient(colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Colors.deepPurple
-                    ]).createShader(rect);
-                  },
-                  child: Text(
-                    '@ShivanshuKGupta',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                ),
-                onTap: () {
-                  launchUrl(Uri.parse('https://github.com/ShivanshuKGupta/'));
-                },
-              ),
+              linkText(context, '@ShivanshuKGupta',
+                  'https://github.com/ShivanshuKGupta/remote/'),
             ],
           ),
         ),
@@ -58,7 +41,7 @@ class MainDrawer extends StatelessWidget {
         tile(
           context,
           title: "Quick Buttons Bar",
-          subtitle: 'Customize quick button menu bar',
+          subtitle: 'Customize quick buttons bar',
           icon: Icons.keyboard_alt_rounded,
           onTap: () {
             Navigator.of(context).pop();
@@ -114,6 +97,32 @@ class MainDrawer extends StatelessWidget {
     );
   }
 
+  Widget linkText(context, String title, String url, {IconData? icon}) {
+    return GestureDetector(
+      child: ShaderMask(
+        blendMode: BlendMode.srcATop,
+        shaderCallback: (rect) {
+          return const LinearGradient(colors: [
+            // Theme.of(context).colorScheme.primary,
+            Colors.blue,
+            Colors.deepPurple
+          ]).createShader(rect);
+        },
+        child: icon != null
+            ? Icon(icon)
+            : Text(
+                title,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+      ),
+      onTap: () {
+        launchUrl(Uri.parse(url));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -138,6 +147,17 @@ class MainDrawer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: widgetList(context),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  linkText(
+                      context, 'Email', "mailto:shivanshukgupta@gmail.com"),
+                  linkText(context, 'Linkedin',
+                      "https://www.linkedin.com/in/shivanshukgupta/"),
+                  linkText(context, 'Github',
+                      "https://www.github.com/shivanshukgupta/"),
+                ],
+              ),
             ],
           ),
         ),
@@ -152,7 +172,10 @@ class MainDrawer extends StatelessWidget {
       IconData? icon}) {
     return ListTile(
         leading: icon == null ? null : Icon(icon),
-        subtitle: Text(subtitle),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
         title: Text(
           title,
           style: Theme.of(context).textTheme.bodyLarge,

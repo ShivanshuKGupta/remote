@@ -26,7 +26,7 @@ class RemoteButtons extends ConsumerWidget {
           : GridView.builder(
               itemCount: buttons.length,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 100, childAspectRatio: 3),
+                  maxCrossAxisExtent: 80, childAspectRatio: 2),
               itemBuilder: (ctx, index) {
                 final String bttnTxt = buttons[index];
                 final icon = morph(bttnTxt);
@@ -34,9 +34,6 @@ class RemoteButtons extends ConsumerWidget {
                   onPressed: socket == null
                       ? null
                       : () => serverNotifier.keyboard(bttnTxt),
-                  onLongPress: socket == null
-                      ? null
-                      : () => buttonNotifier.toggle(bttnTxt),
                   child: icon != null
                       ? Icon(icon)
                       : Text(

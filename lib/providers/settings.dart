@@ -35,7 +35,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.serverAddr = settings["serverAddr"] ?? "192.168.";
     state.portNo = settings["portNo"] ?? "8080";
     state.delayTime = settings["delayTime"] ?? 0.1;
-    state.mouseMode = settings["mouseMode"] ?? false;
+    state.mouseMode = settings["mouseMode"] ?? true;
   }
 
   Future<bool> loadSettings() async {
