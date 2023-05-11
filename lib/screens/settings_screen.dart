@@ -4,6 +4,8 @@ import 'package:remote/providers/server.dart';
 
 import 'package:remote/providers/settings.dart';
 
+import '../providers/remote_buttons.dart';
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -51,6 +53,15 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ),
           ),
+          const Divider(),
+          ListTile(
+              title: const Text('Reset Saved Settings'),
+              onTap: () {
+                ref.read(server.notifier).disconnect();
+                ref.read(settings.notifier).clearSettings();
+                ref.read(remoteButtons.notifier).loadButtons();
+                Navigator.of(context).pop();
+              }),
           const Divider(),
         ],
       ),

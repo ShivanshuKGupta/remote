@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remote/tools/tools.dart';
+import 'package:remote/providers/remote_buttons.dart';
 
-import '../providers/settings.dart';
 import '../providers/server.dart';
 
 class RemoteButtons extends ConsumerWidget {
@@ -10,73 +9,41 @@ class RemoteButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return Padding(
+    final serverNotifier = ref.read(server.notifier);
+    final socket = ref.watch(server);
+    final buttons = ref.watch(remoteButtons);
+    final buttonNotifier = ref.watch(remoteButtons.notifier);
+    return Container(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Card(
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                          onPressed: ref.watch(server) == null
-                              ? null
-                              : () => ref.read(server.notifier).keyboard('esc'),
-                          child: const Text('esc')),
-                      IconButton(
-                        onPressed: ref.watch(server) == null
-                            ? null
-                            : () => ref.read(server.notifier).keyboard('up'),
-                        icon: const Icon(Icons.arrow_drop_up),
-                      ),
-                      TextButton(
-                          onPressed: ref.watch(server) == null
-                              ? null
-                              : () =>
-                                  ref.read(server.notifier).keyboard('ctrl+f5'),
-                          child: const Text('ctrl+F5')),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        onPressed: ref.watch(server) == null
-                            ? null
-                            : () => ref.read(server.notifier).keyboard('left'),
-                        icon: const Icon(Icons.arrow_left),
-                      ),
-                      TextButton(
-                          onPressed: ref.watch(server) == null
-                              ? null
-                              : () => ref.read(server.notifier).keyboard('f5'),
-                          child: const Text('F5')),
-                      IconButton(
-                        onPressed: ref.watch(server) == null
-                            ? null
-                            : () => ref.read(server.notifier).keyboard('right'),
-                        icon: const Icon(Icons.arrow_right),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: ref.watch(server) == null
-                        ? null
-                        : () => ref.read(server.notifier).keyboard('down'),
-                    icon: const Icon(Icons.arrow_drop_down),
-                  ),
-                ],
+      child: buttons.isEmpty
+          ? Center(
+              child: Text(
+                'Quick Buttons Bar',
+                style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: TextAlign.center,
               ),
-            ),
-          ),
-        ],
-      ),
+            )
+          : GridView.builder(
+              itemCount: buttons.length,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 100, childAspectRatio: 3),
+              itemBuilder: (ctx, index) {
+                final String bttnTxt = buttons[index];
+                final icon = morph(bttnTxt);
+                return TextButton(
+                  onPressed: socket == null
+                      ? null
+                      : () => serverNotifier.keyboard(bttnTxt),
+                  onLongPress: socket == null
+                      ? null
+                      : () => buttonNotifier.toggle(bttnTxt),
+                  child: icon != null
+                      ? Icon(icon)
+                      : Text(
+                          bttnTxt,
+                        ),
+                );
+              }),
     );
   }
 }

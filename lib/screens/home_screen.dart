@@ -8,6 +8,7 @@ import 'package:remote/providers/server.dart';
 import 'package:remote/widgets/remote_buttons.dart';
 
 import '../tools/tools.dart';
+import '../widgets/touchpad.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -17,12 +18,12 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0),
-        title: ref.watch(server) == null
-            ? const Text('Connect')
-            : const Text('Remote'),
+        title: Text(ref.watch(server) == null ? 'Connect' : 'Remote',
+            style: Theme.of(context).textTheme.titleLarge),
         actions: [
           if (ref.watch(server) != null)
             IconButton(
+              tooltip: 'Mouse mode',
               onPressed: () {
                 ref.read(settings).mouseMode = !ref.read(settings).mouseMode;
                 ref.read(settings.notifier).notifyListeners();
@@ -37,6 +38,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           if (ref.watch(server) != null)
             IconButton(
+              tooltip: 'Reload Image',
               onPressed: () {
                 ref.read(server.notifier).keyboard('');
               },
@@ -44,6 +46,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           if (ref.watch(server) != null)
             IconButton(
+              tooltip: 'Disconnect',
               onPressed: () {
                 ref.read(server.notifier).disconnect().then((value) {
                   if (!value) {
@@ -59,12 +62,42 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       drawer: const Drawer(child: MainDrawer()),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Show quick buttons bar',
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+        child: const Icon(Icons.border_outer_outlined),
+        onPressed: () {
+          showModalBottomSheet(
+              constraints: const BoxConstraints(maxHeight: 150),
+              context: context,
+              enableDrag: true,
+              useSafeArea: true,
+              isDismissible: true,
+              builder: (context) {
+                return RemoteButtons();
+              });
+        },
+      ),
       body: ref.watch(server) == null
           ? ServerScreen()
           : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PcScreen(),
-                RemoteButtons(),
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: PcScreen(),
+                      ),
+                      TouchPad(),
+                    ],
+                  ),
+                ),
               ],
             ),
     );

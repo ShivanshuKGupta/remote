@@ -1,11 +1,11 @@
 import subprocess
 import os
 import sys
-from tools import *
 
 
 def dbg(msg):
-    print(msg)
+    # print(msg)
+    pass
 
 
 def get_ip_addresses():

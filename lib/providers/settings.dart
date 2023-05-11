@@ -47,9 +47,14 @@ class _SettingsProvider extends StateNotifier<_Settings> {
 
   Future<bool> saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
     prefs.setString('settings', encode());
     return true;
+  }
+
+  Future<void> clearSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    loadSettings();
   }
 
   void notifyListeners() {

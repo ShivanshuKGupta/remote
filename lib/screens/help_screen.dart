@@ -14,22 +14,25 @@ class HelpScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Download the python script from here.'),
+              const Text(
+                  "Download all files from the below link (all .py and .bat files)"),
               GestureDetector(
                 onTap: () => launchUrl(
                   Uri.parse(
-                      'https://github.com/ShivanshuKGupta/remote/blob/master/lib/python/main.py'),
+                      'https://github.com/ShivanshuKGupta/remote/tree/master/lib/python'),
                 ),
                 child: const Text(
-                  'github.com/ShivanshuKGupta/remote/blob/master/lib/python/remote.py',
+                  'github.com/ShivanshuKGupta/remote/tree/master/lib/python',
                   style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
                   ),
                 ),
               ),
-              const Text('Then run it on your PC.'),
+              const Text(
+                  "Then run 'runMe.bat' in administrative mode on your PC."),
             ],
           ),
         ),
