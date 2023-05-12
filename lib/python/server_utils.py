@@ -22,12 +22,12 @@ def serve_connection(conn: socket):
         try:
             data = conn.recv(1024)
         except:
-            print(f"Connection was forcibly closed.")
             os.system('cls')
+            print(f"Connection was forcibly closed.")
             break
         if not data:
-            print('Disconnected')
             os.system('cls')
+            print('Disconnected')
             break
 
         # decoding the data received

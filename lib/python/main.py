@@ -22,8 +22,8 @@ while (True):
     # blocking until a client is connected
     print("In case you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
     dbg(f'Server listening on {host}:{port}')
-    print(f"Enter {host} in the 'Enter Server Address' Field in the app")
-    print(f"Enter {port} in the 'Enter Port Number' Field in the app")
+    print(f"Enter {host} in the 'Enter Server Address' Field of the app")
+    print(f"Enter {port} in the 'Enter Port Number' Field of the app")
     conn, addr = sct.accept()
     print(f'Client App connected from {addr}')
 
