@@ -72,11 +72,9 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
                                 ));
                             setState(() => _isLoading = false);
                           }
-                          print(
-                              "Sending settings: ${ref.read(settings.notifier).encode()}");
                           ref
                               .read(server.notifier)
-                              .send(ref.read(settings.notifier).toString());
+                              .send(ref.read(settings.notifier).encodeServer());
                         });
                       } catch (e) {
                         showMsg(context, e.toString(),

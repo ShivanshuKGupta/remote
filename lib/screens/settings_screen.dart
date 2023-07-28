@@ -1,16 +1,36 @@
+// import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
+
 import 'package:remote/providers/server.dart';
-
 import 'package:remote/providers/settings.dart';
-
 import '../providers/remote_buttons.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
+  // StreamSubscription<HardwareButton>? subscription;
+
+  // void startListening() {
+  //   subscription = FlutterAndroidVolumeKeydown.stream.listen((event) {
+  //     if (event == HardwareButton.volume_down) {
+  //       print("Volume down received");
+  //     } else if (event == HardwareButton.volume_up) {
+  //       print("Volume up received");
+  //     }
+  //   });
+  // }
+
+  // void stopListening() {
+  //   subscription?.cancel();
+  // }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final settingsInstance = ref.read(settings);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -25,15 +45,12 @@ class SettingsScreen extends ConsumerWidget {
               ),
               value: ref.watch(settings).darkMode,
               onChanged: (value) {
-                ref.read(settings).darkMode = value;
+                settingsInstance.darkMode = value;
                 ref.read(settings.notifier).notifyListeners();
-                ref
-                    .read(server.notifier)
-                    .send(ref.read(settings.notifier).toString());
               }),
           const Divider(),
           SwitchListTile(
-              title: const Text('Receive Image'),
+              title: const Text('Receive Screenshot'),
               isThreeLine: true,
               subtitle: Text(
                 'This disables the screenshot receiving feature, can improve performance',
@@ -41,12 +58,45 @@ class SettingsScreen extends ConsumerWidget {
               ),
               value: ref.watch(settings).receiveImage,
               onChanged: (value) {
-                ref.read(settings).receiveImage = value;
+                settingsInstance.receiveImage = value;
                 ref.read(settings.notifier).notifyListeners();
                 ref
                     .read(server.notifier)
-                    .send(ref.read(settings.notifier).toString());
+                    .send(ref.read(settings.notifier).encodeServer());
               }),
+          const Divider(),
+          SwitchListTile(
+              title: const Text('Use Keys instead of Clicks'),
+              isThreeLine: true,
+              subtitle: Text(
+                'Press left/right arrow keys for touches on left/right side of the screen instead of mouse click (in mouse mode).',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+              value: ref.watch(settings).clicksToKeys,
+              onChanged: (value) {
+                settingsInstance.clicksToKeys = value;
+                ref.read(settings.notifier).notifyListeners();
+              }),
+          const Divider(),
+          SwitchListTile(
+              title: const Text('Volume Buttons[not available]'),
+              isThreeLine: true,
+              subtitle: Text(
+                'Use volume buttons to use left/right arrow keys.',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+              value: ref.watch(settings).useVolumeButtons,
+              onChanged: null
+              // (value) {
+              //   settingsInstance.useVolumeButtons = value;
+              //   if (value) {
+              //     startListening();
+              //   } else {
+              //     stopListening();
+              //   }
+              //   ref.read(settings.notifier).notifyListeners();
+              // }
+              ),
           const Divider(),
           ListTile(
             title: const Text('Response Delay'),
@@ -112,7 +162,7 @@ class _DelaySliderState extends ConsumerState<_DelaySlider> {
             ref.read(settings.notifier).saveSettings();
             ref
                 .read(server.notifier)
-                .send(ref.read(settings.notifier).toString());
+                .send(ref.read(settings.notifier).encodeServer());
           },
         ),
         Text("${delayTime.toStringAsFixed(2)} secs"),

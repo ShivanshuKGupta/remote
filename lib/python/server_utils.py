@@ -59,5 +59,4 @@ def serve_connection(conn: socket):
         if (settings.receiveImage and ('mouse' not in keys)):
             sleep(settings.delayTime)
             screenshot.send(conn)
-
-        dbg('screenshot sent!')
+            dbg('screenshot sent!')

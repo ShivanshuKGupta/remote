@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0),
-        title: Text(ref.watch(server) == null ? 'Connect' : 'Remote',
+        title: Text(ref.watch(server) == null ? 'Connect to a PC' : '',
             style: Theme.of(context).textTheme.titleLarge),
         actions: [
           if (ref.watch(server) != null)
@@ -68,7 +68,7 @@ class HomeScreen extends ConsumerWidget {
         child: const Icon(Icons.border_outer_outlined),
         onPressed: () {
           showModalBottomSheet(
-              constraints: const BoxConstraints(maxHeight: 150),
+              constraints: const BoxConstraints(maxHeight: 250),
               context: context,
               enableDrag: true,
               useSafeArea: true,

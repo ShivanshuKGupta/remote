@@ -1,19 +1,21 @@
 @echo off
 
-echo Checking for Chocolatey...
-choco -? >nul 2>&1
-if errorlevel 1 (
-    echo Chocolatey is not installed
-    echo Installing Chocolatey...
-    set "ChocolateyInstall=%SystemDrive%\ProgramData\Chocolatey"
-    if not exist "%ChocolateyInstall%" mkdir "%ChocolateyInstall%"
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -y -noexit"
-)
-
 echo Checking for Python...
 python --version >nul 2>&1
 if errorlevel 1 (
     echo Python is not installed
+    echo Installing python using Chocolatey...
+	
+	echo Checking for Chocolatey...
+	choco -? >nul 2>&1
+	if errorlevel 1 (
+	    echo Chocolatey is not installed
+	    echo Installing Chocolatey...
+	    set "ChocolateyInstall=%SystemDrive%\ProgramData\Chocolatey"
+	    if not exist "%ChocolateyInstall%" mkdir "%ChocolateyInstall%"
+	    powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object 	System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -y -noexit"
+	)
+
     echo Installing Python...
     choco install python -y
 )

@@ -4,8 +4,8 @@ import sys
 
 
 def dbg(msg):
-    # print(msg)
-    pass
+    if (len(sys.argv) > 1 and (sys.argv[1] == '-d' or sys.argv[1] == '-p')):
+        print(msg)
 
 
 def get_ip_addresses():
@@ -46,11 +46,13 @@ def setHostNPort(addresses, DEF_HOST, DEF_PORT):
             elif (arg == '-d'):
                 print("Remote running in developer mode")
                 developer_mode = True
+            if (arg == '-p'):
+                print("Debug messages are enabled")
 
     if (not DEF_HOST.startswith('192')):
         for addr in addresses:
             if (addr.startswith('192')):
-                DEF_HOST = addr
+                host = DEF_HOST = addr
                 break
 
     if (developer_mode):

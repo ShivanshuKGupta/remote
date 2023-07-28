@@ -21,7 +21,13 @@ class TouchPad extends ConsumerWidget {
               color: Colors.white.withOpacity(0),
             ),
             onTap: () {
-              ref.read(server.notifier).keyboard(clickText);
+              if (ref.read(settings).clicksToKeys) {
+                ref.read(server.notifier).keyboard(clickText);
+              } else {
+                ref.read(server.notifier).mouse(0, 0, click: 'primary');
+              }
+              //  instead of 'primary', 'left' can cause issues
+              //  if the pc has its primary button settings changed
               clickText = "";
             },
             onTapDown: (details) => clickText = "",

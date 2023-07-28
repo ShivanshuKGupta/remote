@@ -26,7 +26,9 @@ class RemoteButtons extends ConsumerWidget {
           : GridView.builder(
               itemCount: buttons.length,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 80, childAspectRatio: 2),
+                maxCrossAxisExtent: 80,
+                childAspectRatio: 1.15,
+              ),
               itemBuilder: (ctx, index) {
                 final String bttnTxt = buttons[index];
                 final icon = morph(bttnTxt);

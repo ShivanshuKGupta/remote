@@ -10,6 +10,8 @@ from tools import setHostNPort, get_ip_addresses, dbg
 host, port = setHostNPort(addresses=get_ip_addresses(
 ), DEF_HOST=socket.gethostbyname(socket.gethostname()), DEF_PORT=8080)
 
+print("In case you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
+
 while (True):
     # socket creation
     sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,7 +22,6 @@ while (True):
     sct.listen()
 
     # blocking until a client is connected
-    print("In case you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
     dbg(f'Server listening on {host}:{port}')
     print(f"Enter {host} in the 'Enter Server Address' Field of the app")
     print(f"Enter {port} in the 'Enter Port Number' Field of the app")

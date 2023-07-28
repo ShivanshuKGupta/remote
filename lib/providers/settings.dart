@@ -4,12 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _Settings {
-  bool darkMode = false;
+  // server settings
   bool receiveImage = true;
+  double delayTime = 0.1;
+
+  // app settings
+  bool darkMode = false;
   String serverAddr = "";
   String portNo = "";
   bool mouseMode = false;
-  double delayTime = 0.1;
+  bool clicksToKeys = false; // Replaces mouse click to arrow keys in mouse mode
+  bool useVolumeButtons =
+      true; // Arrow keys can be pressed using volume buttons
 }
 
 class _SettingsProvider extends StateNotifier<_Settings> {
@@ -25,6 +31,17 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "portNo": state.portNo,
       "delayTime": state.delayTime,
       "mouseMode": state.mouseMode,
+      "clicksToKeys": state.clicksToKeys,
+      "useVolumeButtons": state.useVolumeButtons,
+    });
+  }
+
+  String encodeServer() {
+    return json.encode({
+      "settings": json.encode({
+        "receiveImage": state.receiveImage,
+        "delayTime": state.delayTime,
+      })
     });
   }
 
@@ -36,6 +53,8 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.portNo = settings["portNo"] ?? "8080";
     state.delayTime = settings["delayTime"] ?? 0.1;
     state.mouseMode = settings["mouseMode"] ?? true;
+    state.clicksToKeys = settings["clicksToKeys"] ?? false;
+    state.useVolumeButtons = settings["useVolumeButtons"] ?? true;
   }
 
   Future<bool> loadSettings() async {
@@ -62,11 +81,6 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     _Settings savedSettings = state;
     state = _Settings();
     state = savedSettings;
-  }
-
-  @override
-  String toString() {
-    return "${json.encode({"settings": encode()})};";
   }
 }
 

@@ -75,7 +75,7 @@ class MainDrawer extends StatelessWidget {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const SettingsScreen(),
+                builder: (context) => SettingsScreen(),
               ),
             );
           },
