@@ -8,6 +8,7 @@ import custom_commands
 import keyboard_commands
 import os_commands
 import mouse_commands
+import scroll_commands
 
 # tools
 from tools import dbg
@@ -55,6 +56,8 @@ def serve_connection(conn: socket):
                 os_commands.execute(response['os'])
             if ('mouse' in keys):
                 mouse_commands.execute(json.loads(response['mouse']))
+            if ('scroll' in keys):
+                scroll_commands.execute(response['scroll'])
 
         if (settings.receiveImage and ('mouse' not in keys)):
             sleep(settings.delayTime)

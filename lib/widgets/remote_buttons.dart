@@ -12,7 +12,7 @@ class RemoteButtons extends ConsumerWidget {
     final serverNotifier = ref.read(server.notifier);
     final socket = ref.watch(server);
     final buttons = ref.watch(remoteButtons);
-    final buttonNotifier = ref.watch(remoteButtons.notifier);
+    // final buttonNotifier = ref.watch(remoteButtons.notifier);
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: buttons.isEmpty

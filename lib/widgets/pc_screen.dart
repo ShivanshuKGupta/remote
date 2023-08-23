@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../providers/server.dart';
-import '../providers/settings.dart';
+import 'package:remote/providers/settings.dart';
 
 void Function(Image)? setImage;
 
+// ignore: must_be_immutable
 class PcScreen extends ConsumerStatefulWidget {
   Image? image;
   PcScreen({super.key});

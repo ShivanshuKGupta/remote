@@ -81,6 +81,7 @@ class _Server extends StateNotifier<Socket?> {
   }
 
   void keyboard(String key) => send("${json.encode({"keyboard": key})};");
+  void scroll(int value) => send("${json.encode({"scroll": value})};");
   void os(String cmd) => send("${json.encode({"os": cmd})};");
   void custom(String cmd) => send("${json.encode({"custom": cmd})};");
   void mouse(double x, double y, {String? click}) {
