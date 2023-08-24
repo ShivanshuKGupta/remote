@@ -13,6 +13,7 @@ class _Settings {
   String serverAddr = "";
   String portNo = "";
   bool mouseMode = false;
+  bool scrollMode = false;
   bool clicksToKeys = false; // Replaces mouse click to arrow keys in mouse mode
   bool useVolumeButtons =
       true; // Arrow keys can be pressed using volume buttons
@@ -31,6 +32,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "portNo": state.portNo,
       "delayTime": state.delayTime,
       "mouseMode": state.mouseMode,
+      "scrollMode": state.scrollMode,
       "clicksToKeys": state.clicksToKeys,
       "useVolumeButtons": state.useVolumeButtons,
     });
@@ -53,6 +55,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.portNo = settings["portNo"] ?? "8080";
     state.delayTime = settings["delayTime"] ?? 0.1;
     state.mouseMode = settings["mouseMode"] ?? true;
+    state.scrollMode = settings["scrollMode"] ?? true;
     state.clicksToKeys = settings["clicksToKeys"] ?? false;
     state.useVolumeButtons = settings["useVolumeButtons"] ?? true;
   }

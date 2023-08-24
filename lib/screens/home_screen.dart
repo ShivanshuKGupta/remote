@@ -20,46 +20,66 @@ class HomeScreen extends ConsumerWidget {
         backgroundColor: Colors.white.withOpacity(0),
         title: Text(ref.watch(server) == null ? 'Connect to a PC' : '',
             style: Theme.of(context).textTheme.titleLarge),
-        actions: [
-          if (ref.watch(server) != null)
-            IconButton(
-              tooltip: 'Mouse mode',
-              onPressed: () {
-                ref.read(settings).mouseMode = !ref.read(settings).mouseMode;
-                ref.read(settings.notifier).notifyListeners();
-                ref.read(server.notifier).keyboard('');
-              },
-              color: ref.watch(settings).mouseMode
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
-              icon: Icon(ref.read(settings).mouseMode
-                  ? Icons.mouse_rounded
-                  : Icons.mouse_outlined),
-            ),
-          if (ref.watch(server) != null)
-            IconButton(
-              tooltip: 'Reload Image',
-              onPressed: () {
-                ref.read(server.notifier).keyboard('');
-              },
-              icon: const Icon(Icons.refresh_rounded),
-            ),
-          if (ref.watch(server) != null)
-            IconButton(
-              tooltip: 'Disconnect',
-              onPressed: () {
-                ref.read(server.notifier).disconnect().then((value) {
-                  if (!value) {
-                    showMsg(context, "Error disconnecting");
-                    return;
-                  }
-                  showMsg(context, 'Disconnected');
-                });
-              },
-              color: Colors.red,
-              icon: const Icon(Icons.close_rounded),
-            ),
-        ],
+        actions: (ref.watch(server) == null)
+            ? null
+            : [
+                IconButton(
+                  tooltip: 'Mouse mode',
+                  onPressed: () {
+                    ref.read(settings).mouseMode =
+                        !ref.read(settings).mouseMode;
+                    ref.read(settings).scrollMode =
+                        !ref.read(settings).mouseMode
+                            ? false
+                            : ref.read(settings).scrollMode;
+                    ref.read(settings.notifier).notifyListeners();
+                  },
+                  color: ref.watch(settings).mouseMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.secondary,
+                  icon: Icon(ref.read(settings).mouseMode
+                      ? Icons.mouse_rounded
+                      : Icons.mouse_outlined),
+                ),
+                IconButton(
+                  tooltip: 'Scroll mode',
+                  onPressed: () {
+                    ref.read(settings).scrollMode =
+                        !ref.read(settings).scrollMode;
+                    ref.read(settings).mouseMode = ref.read(settings).scrollMode
+                        ? true
+                        : ref.read(settings).mouseMode;
+                    ref.read(settings.notifier).notifyListeners();
+                  },
+                  color: ref.watch(settings).scrollMode
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.secondary,
+                  icon: Icon(ref.read(settings).scrollMode
+                      ? Icons.swap_vert_rounded
+                      : Icons.swap_vert_outlined),
+                ),
+                IconButton(
+                  tooltip: 'Reload Image',
+                  onPressed: () {
+                    ref.read(server.notifier).keyboard('');
+                  },
+                  icon: const Icon(Icons.refresh_rounded),
+                ),
+                IconButton(
+                  tooltip: 'Disconnect',
+                  onPressed: () {
+                    ref.read(server.notifier).disconnect().then((value) {
+                      if (!value) {
+                        showMsg(context, "Error disconnecting");
+                        return;
+                      }
+                      showMsg(context, 'Disconnected');
+                    });
+                  },
+                  color: Colors.red,
+                  icon: const Icon(Icons.close_rounded),
+                ),
+              ],
       ),
       drawer: const Drawer(child: MainDrawer()),
       floatingActionButton: FloatingActionButton(
