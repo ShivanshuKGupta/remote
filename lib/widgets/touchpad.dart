@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -5,19 +8,46 @@ import '../providers/server.dart';
 import '../providers/settings.dart';
 
 // ignore: must_be_immutable
-class TouchPad extends ConsumerWidget {
+class TouchPad extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _TouchPad();
+  }
+}
+
+class _TouchPad extends ConsumerState<TouchPad> {
   bool _scrolling = false;
 
+  StreamSubscription<HardwareButton>? subscription;
   int scrollValue = 0;
 
-  TouchPad({super.key});
+  @override
+  void initState() {
+    super.initState();
+    subscription = FlutterAndroidVolumeKeydown.stream.listen((event) {
+      debugPrint(event.toString());
+      final serverUtils = ref.read(server.notifier);
+      final settingsObj = ref.read(settings);
+      if (event == HardwareButton.volume_down) {
+        serverUtils.scroll(50);
+      } else if (event == HardwareButton.volume_up) {
+        serverUtils.scroll(-50);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    super.dispose();
+  }
 
   String clickText = "";
   final GlobalKey _ssKey = GlobalKey();
   Offset oldpos = Offset.zero;
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     final serverUtils = ref.read(server.notifier);
     final settingsObj = ref.read(settings);
     return (settingsObj.mouseMode == false)
@@ -36,6 +66,13 @@ class TouchPad extends ConsumerWidget {
               //  instead of 'primary', 'left' can cause issues
               //  if the pc has its primary button settings changed
               clickText = "";
+            },
+            onDoubleTap: () {
+              ref.read(settings).scrollMode = !ref.read(settings).scrollMode;
+              ref.read(settings).mouseMode = ref.read(settings).scrollMode
+                  ? true
+                  : ref.read(settings).mouseMode;
+              ref.read(settings.notifier).notifyListeners();
             },
             onTapDown: (details) => clickText = "",
             onTapUp: (details) {

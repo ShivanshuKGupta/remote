@@ -55,8 +55,8 @@ class HomeScreen extends ConsumerWidget {
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.secondary,
                   icon: Icon(ref.read(settings).scrollMode
-                      ? Icons.swap_vert_rounded
-                      : Icons.swap_vert_outlined),
+                      ? Icons.swap_vert_circle
+                      : Icons.swap_vert_circle_outlined),
                 ),
                 IconButton(
                   tooltip: 'Reload Image',
