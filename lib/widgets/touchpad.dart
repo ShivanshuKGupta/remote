@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:remote/providers/volume_button_functions.dart';
 
 import '../providers/server.dart';
 import '../providers/settings.dart';
@@ -29,9 +30,43 @@ class _TouchPad extends ConsumerState<TouchPad> {
       final serverUtils = ref.read(server.notifier);
       final settingsObj = ref.read(settings);
       if (event == HardwareButton.volume_down) {
-        serverUtils.scroll(50);
+        switch (settingsObj.volumeButtonFunctions) {
+          case VolumButtonFunctions.leftRight:
+            serverUtils.keyboard('left');
+            break;
+          case VolumButtonFunctions.upDown:
+            serverUtils.keyboard('down');
+            break;
+          case VolumButtonFunctions.scroll:
+            serverUtils.scroll(50);
+            break;
+          case VolumButtonFunctions.switchMode:
+            ref.read(settings).scrollMode = !ref.read(settings).scrollMode;
+            ref.read(settings).mouseMode = ref.read(settings).scrollMode
+                ? true
+                : ref.read(settings).mouseMode;
+            ref.read(settings.notifier).notifyListeners();
+            break;
+        }
       } else if (event == HardwareButton.volume_up) {
-        serverUtils.scroll(-50);
+        switch (settingsObj.volumeButtonFunctions) {
+          case VolumButtonFunctions.leftRight:
+            serverUtils.keyboard('right');
+            break;
+          case VolumButtonFunctions.upDown:
+            serverUtils.keyboard('up');
+            break;
+          case VolumButtonFunctions.scroll:
+            serverUtils.scroll(-50);
+            break;
+          case VolumButtonFunctions.switchMode:
+            ref.read(settings).scrollMode = !ref.read(settings).scrollMode;
+            ref.read(settings).mouseMode = ref.read(settings).scrollMode
+                ? true
+                : ref.read(settings).mouseMode;
+            ref.read(settings.notifier).notifyListeners();
+            break;
+        }
       }
     });
   }
@@ -67,13 +102,13 @@ class _TouchPad extends ConsumerState<TouchPad> {
               //  if the pc has its primary button settings changed
               clickText = "";
             },
-            onDoubleTap: () {
-              ref.read(settings).scrollMode = !ref.read(settings).scrollMode;
-              ref.read(settings).mouseMode = ref.read(settings).scrollMode
-                  ? true
-                  : ref.read(settings).mouseMode;
-              ref.read(settings.notifier).notifyListeners();
-            },
+            // onDoubleTap: () {
+            //   ref.read(settings).scrollMode = !ref.read(settings).scrollMode;
+            //   ref.read(settings).mouseMode = ref.read(settings).scrollMode
+            //       ? true
+            //       : ref.read(settings).mouseMode;
+            //   ref.read(settings.notifier).notifyListeners();
+            // },
             onTapDown: (details) => clickText = "",
             onTapUp: (details) {
               final RenderBox box =

@@ -7,30 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:remote/providers/server.dart';
 import 'package:remote/providers/settings.dart';
+import 'package:remote/providers/volume_button_functions.dart';
 import '../providers/remote_buttons.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
-  // StreamSubscription<HardwareButton>? subscription;
-
-  // void startListening() {
-  //   subscription = FlutterAndroidVolumeKeydown.stream.listen((event) {
-  //     if (event == HardwareButton.volume_down) {
-  //       print("Volume down received");
-  //     } else if (event == HardwareButton.volume_up) {
-  //       print("Volume up received");
-  //     }
-  //   });
-  // }
-
-  // void stopListening() {
-  //   subscription?.cancel();
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsInstance = ref.read(settings);
+    final settingsClass = ref.read(settings.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -46,7 +32,7 @@ class SettingsScreen extends ConsumerWidget {
               value: ref.watch(settings).darkMode,
               onChanged: (value) {
                 settingsInstance.darkMode = value;
-                ref.read(settings.notifier).notifyListeners();
+                settingsClass.notifyListeners();
               }),
           const Divider(),
           SwitchListTile(
@@ -59,10 +45,8 @@ class SettingsScreen extends ConsumerWidget {
               value: ref.watch(settings).receiveImage,
               onChanged: (value) {
                 settingsInstance.receiveImage = value;
-                ref.read(settings.notifier).notifyListeners();
-                ref
-                    .read(server.notifier)
-                    .send(ref.read(settings.notifier).encodeServer());
+                settingsClass.notifyListeners();
+                ref.read(server.notifier).send(settingsClass.encodeServer());
               }),
           const Divider(),
           SwitchListTile(
@@ -75,28 +59,52 @@ class SettingsScreen extends ConsumerWidget {
               value: ref.watch(settings).clicksToKeys,
               onChanged: (value) {
                 settingsInstance.clicksToKeys = value;
-                ref.read(settings.notifier).notifyListeners();
+                settingsClass.notifyListeners();
               }),
           const Divider(),
-          SwitchListTile(
-              title: const Text('Volume Buttons[not available]'),
-              isThreeLine: true,
-              subtitle: Text(
-                'Use volume buttons to use left/right arrow keys.',
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-              value: ref.watch(settings).useVolumeButtons,
-              onChanged: null
-              // (value) {
-              //   settingsInstance.useVolumeButtons = value;
-              //   if (value) {
-              //     startListening();
-              //   } else {
-              //     stopListening();
-              //   }
-              //   ref.read(settings.notifier).notifyListeners();
-              // }
-              ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Volume Button Function",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                DropdownButton(
+                  iconSize: 0,
+                  elevation: 5,
+                  isDense: false,
+                  hint: const Text('Function'),
+                  borderRadius: BorderRadius.circular(20),
+                  value: settingsInstance.volumeButtonFunctions,
+                  items: const <DropdownMenuItem<VolumButtonFunctions>>[
+                    DropdownMenuItem(
+                      value: VolumButtonFunctions.leftRight,
+                      child: Text('Left/Right'),
+                    ),
+                    DropdownMenuItem(
+                      value: VolumButtonFunctions.upDown,
+                      child: Text('Up/Down'),
+                    ),
+                    DropdownMenuItem(
+                      value: VolumButtonFunctions.scroll,
+                      child: Text('Scroll'),
+                    ),
+                    DropdownMenuItem(
+                      value: VolumButtonFunctions.switchMode,
+                      child: Text('Toggle Scroll Mode'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    settingsInstance.volumeButtonFunctions =
+                        value ?? VolumButtonFunctions.leftRight;
+                    settingsClass.notifyListeners();
+                  },
+                ),
+              ],
+            ),
+          ),
           const Divider(),
           ListTile(
             title: const Text('Response Delay'),
@@ -115,7 +123,7 @@ class SettingsScreen extends ConsumerWidget {
               textColor: Colors.redAccent,
               onTap: () async {
                 await ref.read(server.notifier).disconnect();
-                await ref.read(settings.notifier).clearSettings();
+                await settingsClass.clearSettings();
                 await ref.read(remoteButtons.notifier).loadButtons();
                 if (context.mounted) {
                   Navigator.of(context).pop();
@@ -145,6 +153,7 @@ class _DelaySliderState extends ConsumerState<_DelaySlider> {
   double delayTime = 0;
   @override
   Widget build(BuildContext context) {
+    final settingsClass = ref.read(settings.notifier);
     return Row(
       children: [
         Slider(
@@ -159,10 +168,8 @@ class _DelaySliderState extends ConsumerState<_DelaySlider> {
           },
           onChangeEnd: (value) {
             ref.read(settings).delayTime = value;
-            ref.read(settings.notifier).saveSettings();
-            ref
-                .read(server.notifier)
-                .send(ref.read(settings.notifier).encodeServer());
+            settingsClass.saveSettings();
+            ref.read(server.notifier).send(settingsClass.encodeServer());
           },
         ),
         Text("${delayTime.toStringAsFixed(2)} secs"),

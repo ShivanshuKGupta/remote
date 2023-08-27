@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remote/providers/volume_button_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _Settings {
@@ -15,8 +16,7 @@ class _Settings {
   bool mouseMode = false;
   bool scrollMode = false;
   bool clicksToKeys = false; // Replaces mouse click to arrow keys in mouse mode
-  bool useVolumeButtons =
-      true; // Arrow keys can be pressed using volume buttons
+  VolumButtonFunctions volumeButtonFunctions = VolumButtonFunctions.leftRight;
 }
 
 class _SettingsProvider extends StateNotifier<_Settings> {
@@ -34,7 +34,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "mouseMode": state.mouseMode,
       "scrollMode": state.scrollMode,
       "clicksToKeys": state.clicksToKeys,
-      "useVolumeButtons": state.useVolumeButtons,
+      "volumeButtonFunctions": state.volumeButtonFunctions.index,
     });
   }
 
@@ -57,7 +57,8 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.mouseMode = settings["mouseMode"] ?? true;
     state.scrollMode = settings["scrollMode"] ?? true;
     state.clicksToKeys = settings["clicksToKeys"] ?? false;
-    state.useVolumeButtons = settings["useVolumeButtons"] ?? true;
+    state.volumeButtonFunctions =
+        VolumButtonFunctions.values[settings["volumeButtonFunctions"] ?? 0];
   }
 
   Future<bool> loadSettings() async {
