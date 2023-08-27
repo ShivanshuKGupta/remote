@@ -10,7 +10,7 @@ from tools import setHostNPort, get_ip_addresses, dbg
 host, port = setHostNPort(addresses=get_ip_addresses(
 ), DEF_HOST=socket.gethostbyname(socket.gethostname()), DEF_PORT=8080)
 
-print("In case you don't have the app, go here: https://github.com/ShivanshuKGupta/remote/")
+print("In case you don't have the app or want instructions on how to use it,\ngo here: https://github.com/ShivanshuKGupta/remote/releases/latest")
 
 while (True):
     # socket creation

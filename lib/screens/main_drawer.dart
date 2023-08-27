@@ -33,7 +33,7 @@ class MainDrawer extends StatelessWidget {
                 ),
               ),
               linkText(context, '@ShivanshuKGupta',
-                  'https://github.com/ShivanshuKGupta/remote/'),
+                  'https://github.com/ShivanshuKGupta/remote/releases/latest'),
             ],
           ),
         ),
