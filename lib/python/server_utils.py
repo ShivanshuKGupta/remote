@@ -17,11 +17,22 @@ from settings import settings
 
 
 def serve_connection(conn: socket):
+    ip_addr = socket.gethostbyname(socket.gethostname())
     # serving the client
     while True:
         # blocking until we receive data
         try:
             data = conn.recv(1024)
+        except socket.error as e:
+            if e.errno == socket.errno.EWOULDBLOCK:
+                new_ip_addr = socket.gethostbyname(socket.gethostname())
+                if (new_ip_addr != ip_addr):
+                    ip_addr = new_ip_addr
+                    break
+                continue  # do nothing
+            else:
+                print(f"Socket error: {str(e)}")
+                break
         except:
             os.system('cls')
             print(f"Connection was forcibly closed.")

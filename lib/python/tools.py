@@ -13,9 +13,7 @@ def get_ip_addresses():
 
     start = ipconfig.find("IPv4 Address")
     if (start == -1):
-        print('Make Sure that you are connected to a network then try again.')
-        os.system('pause')
-        exit(0)
+        return []
 
     addresses = []
 
@@ -38,6 +36,9 @@ def setHostNPort(addresses, DEF_HOST, DEF_PORT):
     developer_mode = False
     port = DEF_PORT
     host = DEF_HOST
+
+    if (len(addresses) == 0):
+        return None, None
 
     if (len(sys.argv) > 1):
         for arg in sys.argv:
