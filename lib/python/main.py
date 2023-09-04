@@ -13,17 +13,26 @@ from tools import setHostNPort, get_ip_addresses, dbg
 print("In case you don't have the app or want instructions on how to use it,\ngo here: https://github.com/ShivanshuKGupta/remote/releases/latest")
 
 ip_addr = socket.gethostbyname(socket.gethostname())
+host, port = None, None
 
 while (True):
-    host, port = setHostNPort(addresses=get_ip_addresses(
-    ), DEF_HOST=ip_addr, DEF_PORT=8080)
+    if port is None or host is None:
+        host, port = setHostNPort(addresses=get_ip_addresses(
+        ), DEF_HOST=ip_addr, DEF_PORT=8080)
 
     # socket creation
     sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if (host is not None):
         # if connected to a network
         sct.setblocking(False)
-        sct.bind((host, port))
+        try:
+            sct.bind((host, port))
+        except OSError as osError:
+            if (osError.errno == 10048):
+                print(
+                    f"Port {port} is busy. Retrying with port number: {port+1}")
+                port += 1
+                continue
 
         # listening for incoming connections - if multiple users want to use the same host
         # then this listen function needs to be changed
@@ -43,10 +52,13 @@ while (True):
                     time.sleep(1)
                     new_ip_addr = socket.gethostbyname(socket.gethostname())
                     if (new_ip_addr != ip_addr):
+                        print("Network change detected")
                         ip_addr = new_ip_addr
+                        host = None
                         break
                 else:
                     print("Socket error:", str(e))
+                    host = None
             except KeyboardInterrupt:
                 # Handling Ctrl+C
                 exit(0)
@@ -63,11 +75,11 @@ while (True):
         conn.close()
         sct.close()
     else:
-        os.system('cls')
         print("You are not connected to a network")
         while (True):
             new_ip_addr = socket.gethostbyname(socket.gethostname())
             if (new_ip_addr != ip_addr):
+                print("Network change detected")
                 ip_addr = new_ip_addr
                 break
             time.sleep(1)
