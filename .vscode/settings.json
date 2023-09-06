@@ -1,3 +1,29 @@
 {
-    "code-runner.customCommand": "python lib\\python\\main.py -p"
+    "code-runner.customCommand": "python lib\\python\\main.py -p",
+    "files.exclude": {
+        ".idea/": true,
+        ".dart_tool/": true,
+        // "android/": true,
+        // ".vscode/": true,
+        "ios/": true,
+        // "build/": true,
+        "test/": true,
+        // "web/": true,
+        ".flutter-plugins": true,
+        ".flutter-plugins-dependencies": true,
+        ".metadata": true,
+        "analysis_options.yaml": true,
+        "hustle_stay.iml": true,
+        "pubspec.lock": true,
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "pubspec.yaml": "pubspec.lock,pubspec_overrides.yaml,.packages,.flutter-plugins,.flutter-plugins-dependencies,.metadata",
+        "*.dart": "${capture}.g.dart"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true,
+    },
 }

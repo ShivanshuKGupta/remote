@@ -18,3 +18,11 @@ showSnackBar(BuildContext context, SnackBar snackBar) {
   ScaffoldMessenger.of(context).clearSnackBars();
   return ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
+
+Widget circularProgressIndicator() {
+  return const SizedBox(
+    width: 16,
+    height: 16,
+    child: CircularProgressIndicator(),
+  );
+}

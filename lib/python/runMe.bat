@@ -1,7 +1,7 @@
 @echo off
 cd %~dp0
 
-echo Checking for installations required
+echo Checking for required installations
 call check_dependencies
 :starting
 python main.py %1

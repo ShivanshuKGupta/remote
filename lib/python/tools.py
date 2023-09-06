@@ -1,9 +1,9 @@
-import subprocess
 import os
+import subprocess
 import sys
 
 
-def dbg(msg):
+def dbg(msg) -> None:
     if (len(sys.argv) > 1 and (sys.argv[1] == '-d' or sys.argv[1] == '-p')):
         print(msg)
 
@@ -67,3 +67,22 @@ def setHostNPort(addresses, DEF_HOST, DEF_PORT):
         else:
             port = int(port)
     return host, port
+
+
+def bindSocket(socket, host: str, port: int, interval=1) -> int:
+    while (True):
+        try:
+            socket.bind((host, port))
+        except OSError as osError:
+            if (osError.errno == 10048):
+                print(
+                    f"Port {port} is busy. Retrying with port number: ", end='')
+                port += interval
+                print(port)
+                continue
+        break
+    return port
+
+
+def cls():
+    os.system('cls')
