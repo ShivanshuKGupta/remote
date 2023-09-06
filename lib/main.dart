@@ -15,7 +15,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool darkMode = ref.watch(settings).darkMode;
+    final settingsRef = ref.watch(settings);
+    final bool darkMode = settingsRef.darkMode;
     final serverRef = ref.watch(server);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,7 +31,9 @@ class MyApp extends ConsumerWidget {
             bodyColor: darkMode ? Colors.white : Colors.black,
             displayColor: darkMode ? Colors.white : Colors.black,
           )),
-      home: serverRef == null ? const ScanScreen() : const HomeScreen(),
+      home: serverRef == null && !settingsRef.manuallyConnect
+          ? const ScanScreen()
+          : const HomeScreen(),
     );
   }
 }

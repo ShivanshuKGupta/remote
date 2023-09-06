@@ -1,16 +1,16 @@
-import mss
 import base64
 import os
-
 import socket
 
+import mss
 from tools import dbg
 
 
 def send(conn: socket):
     image_base64 = 0
-    with mss.mss() as sct:
-        sct.shot(output='screenshot.png')
+    with mss.mss() as ss:
+        ss.compression_level = 9
+        ss.shot(output='screenshot.png')
         with open('screenshot.png', 'rb') as f:
             image_bytes = f.read()
         os.system("del screenshot.png")

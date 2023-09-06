@@ -54,7 +54,7 @@ Future<void> sendBroadcastMessage(
 
 Future<DeviceInfo?> sendConnectionRequest(
     RawDatagramSocket socket, DeviceInfo deviceInfo) async {
-  sendMessage(
+  await sendMessage(
       socket,
       deviceInfo.encode()
         ..addAll({
@@ -80,13 +80,11 @@ Future<DeviceInfo?> sendConnectionRequest(
         if (serverData['action'] == 'accept') {
           return DeviceInfo(
               InternetAddress(serverData['ip']), serverData['port']);
-        } else {
-          return null;
         }
       }
     } while (ack != null);
   }
-  throw "Connection request timeout.";
+  return null;
 }
 
 class ScanService {

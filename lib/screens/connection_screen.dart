@@ -6,7 +6,7 @@ import '../providers/settings.dart';
 import '../tools/tools.dart';
 
 class ServerScreen extends ConsumerStatefulWidget {
-  ServerScreen({super.key});
+  const ServerScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ServerScreenState();
@@ -20,8 +20,10 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _serverAddr.text = ref.watch(settings).serverAddr;
-    _portNo.text = ref.read(settings).portNo;
+    final settingsObj = ref.watch(settings);
+    final settingsClass = ref.watch(settings.notifier);
+    _serverAddr.text = settingsObj.serverAddr;
+    _portNo.text = settingsObj.portNo;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -93,7 +95,17 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
                       child: CircularProgressIndicator(),
                     )
                   : const Text('Connect'),
-            )
+            ),
+            TextButton(
+              onPressed: () {
+                settingsObj.manuallyConnect = false;
+                settingsClass.notifyListeners();
+              },
+              child: const Text(
+                'Don\'t know the ip address?\nScan instead',
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),

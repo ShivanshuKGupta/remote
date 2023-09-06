@@ -92,7 +92,7 @@ while (True):
     print(
         f"Scan for device '{socket.gethostname()}({platform.system()})' in the remote app")
     print(
-        f"Or if scanning doesn;t works then connect to {host}:{port} manually.")
+        f"Or if scanning doesn't works then connect to {host}:{port} manually.")
 
     keepRunning = True
     while (keepRunning):

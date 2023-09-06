@@ -35,6 +35,10 @@ class _PcScreenState extends ConsumerState<PcScreen> {
               style: Theme.of(context).textTheme.titleLarge,
             ),
           )
-        : InteractiveViewer(key: viewerKey, child: widget.image!);
+        : InteractiveViewer(
+            key: viewerKey,
+            maxScale: 200,
+            child: widget.image!,
+          );
   }
 }

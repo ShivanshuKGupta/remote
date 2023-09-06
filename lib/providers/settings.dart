@@ -8,6 +8,7 @@ class _Settings {
   // server settings
   bool receiveImage = true;
   double delayTime = 0.1;
+  bool manuallyConnect = false;
 
   // app settings
   bool darkMode = false;
@@ -34,6 +35,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "delayTime": state.delayTime,
       "mouseMode": state.mouseMode,
       "deviceName": state.deviceName,
+      "manuallyConnect": state.manuallyConnect,
       "scrollMode": state.scrollMode,
       "clicksToKeys": state.clicksToKeys,
       "volumeButtonFunctions": state.volumeButtonFunctions.index,
@@ -59,6 +61,8 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.delayTime = settings["delayTime"] ?? 0.1;
     state.mouseMode = settings["mouseMode"] ?? true;
     state.scrollMode = settings["scrollMode"] ?? true;
+    state.manuallyConnect =
+        settings["manuallyConnect"] ?? state.manuallyConnect;
     state.clicksToKeys = settings["clicksToKeys"] ?? false;
     state.deviceName = settings["deviceName"] ?? state.deviceName;
     state.volumeButtonFunctions =
