@@ -96,7 +96,6 @@ class ScanService {
   DeviceInfo deviceInfo;
 
   ScanService({required this.deviceInfo}) {
-    createSocket();
     scanning.addListener(_scan);
   }
 
@@ -106,6 +105,7 @@ class ScanService {
   }
 
   void startScanning() {
+    assert(socket != null);
     debugPrint("Scanning Started");
     scanning.value = true;
   }

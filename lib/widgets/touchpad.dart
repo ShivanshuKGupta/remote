@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
 import 'package:remote/providers/volume_button_functions.dart';
 
 import '../providers/server.dart';
@@ -10,6 +10,8 @@ import '../providers/settings.dart';
 
 // ignore: must_be_immutable
 class TouchPad extends ConsumerStatefulWidget {
+  const TouchPad({super.key});
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return _TouchPad();
@@ -138,7 +140,7 @@ class _TouchPad extends ConsumerState<TouchPad> {
             onPanUpdate: (details) {
               final pos = details.localPosition;
               Offset change = pos - oldpos;
-              change *= 5;
+              change *= settingsObj.mouseSensitivity;
               oldpos = pos;
               // print("change = $change dx=${change.dx}");
               if (settingsObj.scrollMode) {

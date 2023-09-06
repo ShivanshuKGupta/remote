@@ -8,6 +8,7 @@ class _Settings {
   // server settings
   bool receiveImage = true;
   double delayTime = 0.1;
+  double mouseSensitivity = 5;
   bool manuallyConnect = false;
 
   // app settings
@@ -35,6 +36,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
       "delayTime": state.delayTime,
       "mouseMode": state.mouseMode,
       "deviceName": state.deviceName,
+      "mouseSensitivity": state.mouseSensitivity,
       "manuallyConnect": state.manuallyConnect,
       "scrollMode": state.scrollMode,
       "clicksToKeys": state.clicksToKeys,
@@ -59,8 +61,10 @@ class _SettingsProvider extends StateNotifier<_Settings> {
     state.serverAddr = settings["serverAddr"] ?? "192.168.";
     state.portNo = settings["portNo"] ?? "8080";
     state.delayTime = settings["delayTime"] ?? 0.1;
+    state.mouseSensitivity =
+        settings["mouseSensitivity"] ?? state.mouseSensitivity;
     state.mouseMode = settings["mouseMode"] ?? true;
-    state.scrollMode = settings["scrollMode"] ?? true;
+    state.scrollMode = settings["scrollMode"] ?? false;
     state.manuallyConnect =
         settings["manuallyConnect"] ?? state.manuallyConnect;
     state.clicksToKeys = settings["clicksToKeys"] ?? false;

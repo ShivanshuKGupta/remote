@@ -1,13 +1,13 @@
 // import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:flutter_android_volume_keydown/flutter_android_volume_keydown.dart';
 
 import 'package:remote/providers/server.dart';
 import 'package:remote/providers/settings.dart';
 import 'package:remote/providers/volume_button_functions.dart';
+
 import '../providers/remote_buttons.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -107,14 +107,38 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(),
           ListTile(
-            title: const Text('Response Delay'),
+            title: const Text('Screenshot Response Delay (in sec)'),
             subtitle: Text(
               'Delay in receiving the screenshot, so that you may get expected image after a slide change',
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
             isThreeLine: true,
           ),
-          const _DelaySlider(),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: _DelaySlider(
+              (value) {
+                ref.read(settings).delayTime = value;
+                settingsClass.saveSettings();
+                ref.read(server.notifier).send(settingsClass.encodeServer());
+              },
+              max: 1,
+              min: 0,
+              value: settingsInstance.delayTime,
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Mouse Sensitivity'),
+            subtitle: _DelaySlider(
+              (value) {
+                settingsInstance.mouseSensitivity = value;
+              },
+              min: 0.1,
+              max: 10,
+              value: settingsInstance.mouseSensitivity,
+            ),
+          ),
           const Divider(),
           ListTile(
               leading: const Icon(Icons.refresh_rounded),
@@ -136,43 +160,46 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-class _DelaySlider extends ConsumerStatefulWidget {
-  const _DelaySlider({super.key});
+class _DelaySlider extends StatefulWidget {
+  _DelaySlider(
+    this.onChange, {
+    required this.min,
+    required this.max,
+    this.value,
+  });
+  double min, max;
+  double? value;
+  void Function(double value) onChange;
 
   @override
-  ConsumerState<_DelaySlider> createState() => _DelaySliderState();
+  State<_DelaySlider> createState() => _DelaySliderState();
 }
 
-class _DelaySliderState extends ConsumerState<_DelaySlider> {
+class _DelaySliderState extends State<_DelaySlider> {
   @override
   void initState() {
     super.initState();
-    delayTime = ref.read(settings).delayTime;
+    delayTime = widget.value ?? (widget.max + widget.min) / 2;
   }
 
   double delayTime = 0;
   @override
   Widget build(BuildContext context) {
-    final settingsClass = ref.read(settings.notifier);
     return Row(
       children: [
         Slider(
           label: 'Delay Time',
           value: delayTime,
-          min: 0,
-          max: 1,
+          min: widget.min,
+          max: widget.max,
           onChanged: (value) {
             setState(() {
               delayTime = value;
             });
           },
-          onChangeEnd: (value) {
-            ref.read(settings).delayTime = value;
-            settingsClass.saveSettings();
-            ref.read(server.notifier).send(settingsClass.encodeServer());
-          },
+          onChangeEnd: (value) => widget.onChange(value),
         ),
-        Text("${delayTime.toStringAsFixed(2)} secs"),
+        Text(delayTime.toStringAsFixed(2)),
       ],
     );
   }

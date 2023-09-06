@@ -33,6 +33,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
           platform: 'Android',
         );
         scanService = ScanService(deviceInfo: deviceInfo!);
+        scanService!
+            .createSocket()
+            .then((value) => scanService!.startScanning());
         setState(() {}); // to update the ip address shown
       }
     });
@@ -90,6 +93,12 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                   children: devices
                       .map<Widget>(
                         (device) => ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground),
+                          ),
                           onTap: () async {
                             if (await askUser(
                                   context,
@@ -183,41 +192,59 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                         ),
                       ),
                     )
-                    ..insert(
+                    ..insertAll(
                       0,
-                      Card(
-                        margin: const EdgeInsets.all(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Device Name: ${settingsObj.deviceName}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              Text(
-                                deviceInfo == null
-                                    ? "No Connection"
-                                    : '${scanService?.socket?.address.address}:${scanService?.socket?.port}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                              )
-                            ],
+                      [
+                        Card(
+                          margin: const EdgeInsets.all(10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Device Name: ${settingsObj.deviceName}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                Text(
+                                  deviceInfo == null
+                                      ? "No Connection"
+                                      : '${scanService?.socket?.address.address}:${scanService?.socket?.port}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10.0,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            'Available Devices',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                 );
               },

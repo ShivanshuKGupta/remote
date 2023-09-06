@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remote/providers/settings.dart';
-import 'package:remote/screens/main_drawer.dart';
-import 'package:remote/screens/connection_screen.dart';
-import 'package:remote/widgets/pc_screen.dart';
 import 'package:remote/providers/server.dart';
+import 'package:remote/providers/settings.dart';
+import 'package:remote/screens/connection_screen.dart';
+import 'package:remote/screens/main_drawer.dart';
+import 'package:remote/widgets/pc_screen.dart';
 import 'package:remote/widgets/remote_buttons.dart';
 
 import '../tools/tools.dart';
@@ -32,6 +32,8 @@ class HomeScreen extends ConsumerWidget {
                         !ref.read(settings).mouseMode
                             ? false
                             : ref.read(settings).scrollMode;
+                    showMsg(context,
+                        "Mouse mode is ${ref.read(settings).mouseMode ? 'on' : 'off'} now");
                     ref.read(settings.notifier).notifyListeners();
                   },
                   color: ref.watch(settings).mouseMode
@@ -49,6 +51,8 @@ class HomeScreen extends ConsumerWidget {
                     ref.read(settings).mouseMode = ref.read(settings).scrollMode
                         ? true
                         : ref.read(settings).mouseMode;
+                    showMsg(context,
+                        "Scroll mode is ${ref.read(settings).scrollMode ? 'on' : 'off'} now");
                     ref.read(settings.notifier).notifyListeners();
                   },
                   color: ref.watch(settings).scrollMode
@@ -99,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
         },
       ),
       body: ref.watch(server) == null
-          ? ServerScreen()
+          ? const ServerScreen()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -114,7 +118,7 @@ class HomeScreen extends ConsumerWidget {
                         right: 0,
                         child: PcScreen(),
                       ),
-                      TouchPad(),
+                      const TouchPad(),
                     ],
                   ),
                 ),
