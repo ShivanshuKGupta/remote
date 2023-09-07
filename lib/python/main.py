@@ -60,17 +60,13 @@ def handleBroadcastSignals(sct, thisDeviceIP: str, thisDevicePort: int):
 
 print("In case you don't have the app or want instructions on how to use it,\ngo here: https://github.com/ShivanshuKGupta/remote/releases/latest")
 
-sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sct.setblocking(False)
-discovery_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-discovery_socket.setblocking(False)
 
 while (True):
     ip_addr = socket.gethostbyname(socket.gethostname())
     host, port = setHostNPort(get_ip_addresses(), ip_addr, 8080)
 
     if (host is None):
-        print("Connect to a network first (Wifi, personal hotspot etc.)")
+        print("You are not connected to a network.")
         while (True):
             new_ip_addr = socket.gethostbyname(socket.gethostname())
             if (new_ip_addr != ip_addr):
@@ -81,6 +77,11 @@ while (True):
                 break
             time.sleep(1)
         continue
+
+    sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sct.setblocking(False)
+    discovery_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    discovery_socket.setblocking(False)
 
     port, discovery_port = bindSocket(sct, host, port), bindSocket(
         discovery_socket, host, port-1, -1)
@@ -106,3 +107,5 @@ while (True):
             ip_addr = new_ip_addr
             host = None
             break
+    sct.close()
+    discovery_socket.close()
