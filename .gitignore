@@ -45,4 +45,4 @@ app.*.map.json
 
 # python cache
 lib\python\__pycache__
-lib\remote-server.zip
+**/*.zip
