@@ -1,19 +1,19 @@
-import os
-from time import sleep  # for delay in between command execution and taking screenshot
-import socket
 import json
+import os
+import socket
+from time import \
+    sleep  # for delay in between command execution and taking screenshot
 
 # command definitions
 import custom_commands
 import keyboard_commands
-import os_commands
 import mouse_commands
+import os_commands
+import screenshot
 import scroll_commands
-
+from settings import settings
 # tools
 from tools import dbg
-import screenshot
-from settings import settings
 
 
 def serve_connection(conn: socket):
@@ -61,6 +61,10 @@ def serve_connection(conn: socket):
                 settings.initialize(response['settings'])
             if ('keyboard' in keys):
                 keyboard_commands.execute(response['keyboard'])
+                if (settings.receiveImage):
+                    sleep(settings.delayTime)
+                    screenshot.send(conn)
+                    dbg('screenshot sent!')
             if ('custom' in keys):
                 custom_commands.execute(response['custom'])
             if ('os' in keys):
@@ -69,8 +73,3 @@ def serve_connection(conn: socket):
                 mouse_commands.execute(json.loads(response['mouse']))
             if ('scroll' in keys):
                 scroll_commands.execute(response['scroll'])
-
-        if (settings.receiveImage and ('mouse' not in keys)):
-            sleep(settings.delayTime)
-            screenshot.send(conn)
-            dbg('screenshot sent!')
