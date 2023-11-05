@@ -55,7 +55,7 @@ class OsButtons extends ConsumerWidget {
               onPressed: ref.read(server) == null
                   ? null
                   : () {
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                       ref.read(server.notifier).os('shutdown /s');
                     },
               icon: const Icon(
@@ -65,6 +65,22 @@ class OsButtons extends ConsumerWidget {
               label: const Text(
                 'ShutDown',
                 style: TextStyle(color: Colors.red),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: ref.read(server) == null
+                  ? null
+                  : () {
+                      // Navigator.of(context).pop();
+                      ref.read(server.notifier).os('shutdown -a');
+                    },
+              icon: const Icon(
+                Icons.close_rounded,
+                color: Colors.green,
+              ),
+              label: const Text(
+                'Cancel ShutDown',
+                style: TextStyle(color: Colors.green),
               ),
             ),
           ],

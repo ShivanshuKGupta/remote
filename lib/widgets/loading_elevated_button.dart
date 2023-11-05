@@ -41,7 +41,9 @@ class _LoadingElevatedButtonState extends State<LoadingElevatedButton> {
               try {
                 await widget.onPressed!();
               } catch (e) {
-                showMsg(context, e.toString());
+                if (context.mounted) {
+                  showMsg(context, e.toString());
+                }
                 if (widget.errorHandler != null) widget.errorHandler!(e);
               }
               if (context.mounted) {

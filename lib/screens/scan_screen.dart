@@ -7,6 +7,7 @@ import 'package:remote/providers/server.dart';
 import 'package:remote/providers/settings.dart';
 import 'package:remote/screens/main_drawer.dart';
 import 'package:remote/tools/tools.dart';
+import 'package:remote/widgets/dark_light_mode_button.dart';
 import 'package:remote/widgets/loading_elevated_button.dart';
 
 class ScanScreen extends ConsumerStatefulWidget {
@@ -47,6 +48,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
     deviceInfo?.name = settingsObj.deviceName;
     return Scaffold(
       appBar: AppBar(
+        actions: const [
+          DarkLightModeIconButton(),
+        ],
         title: ShaderMask(
           blendMode: BlendMode.srcATop,
           shaderCallback: (rect) {
@@ -114,8 +118,11 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                               final serverInfo = await sendConnectionRequest(
                                   scanService!.socket!, device);
                               if (serverInfo == null) {
-                                showMsg(context, "Connection refused by server",
-                                    icon: const Icon(Icons.close_rounded));
+                                if (context.mounted) {
+                                  showMsg(
+                                      context, "Connection refused by server",
+                                      icon: const Icon(Icons.close_rounded));
+                                }
                                 return;
                               }
                               debugPrint(
@@ -144,11 +151,13 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                                     ref.read(settings.notifier).encodeServer());
                               });
                             } catch (e) {
-                              showMsg(context, e.toString(),
-                                  icon: const Icon(
-                                    Icons.close_rounded,
-                                    color: Colors.red,
-                                  ));
+                              if (context.mounted) {
+                                showMsg(context, e.toString(),
+                                    icon: const Icon(
+                                      Icons.close_rounded,
+                                      color: Colors.red,
+                                    ));
+                              }
                             }
                           },
                           title: Text(
@@ -171,21 +180,25 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        circularProgressIndicator(),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: circularProgressIndicator(),
+                                        ),
+                                        const Text("Can't find your device?"),
                                         if (child != null) child,
                                       ],
                                     ),
                                   )
                                 : Container();
                           },
-                          child: TextButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               scanService?.stopScanning();
                               settingsObj.manuallyConnect = true;
                               ref.watch(settings.notifier).notifyListeners();
                             },
                             child: const Text(
-                              'Can\'t find your device?\nConnect Manually',
+                              'Connect Manually',
                               textAlign: TextAlign.center,
                             ),
                           ),

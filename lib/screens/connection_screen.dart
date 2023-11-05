@@ -96,13 +96,16 @@ class _ServerScreenState extends ConsumerState<ServerScreen> {
                     )
                   : const Text('Connect'),
             ),
-            TextButton(
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 35)),
               onPressed: () {
                 settingsObj.manuallyConnect = false;
                 settingsClass.notifyListeners();
               },
               child: const Text(
-                'Don\'t know the ip address?\nScan instead',
+                "Don't know the ip address?\nScan instead",
                 textAlign: TextAlign.center,
               ),
             ),

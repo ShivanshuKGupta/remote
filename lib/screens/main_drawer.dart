@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remote/providers/server.dart';
-import 'package:remote/providers/settings.dart';
 import 'package:remote/screens/customize_buttons.dart';
+import 'package:remote/screens/os_buttons.dart';
 import 'package:remote/screens/settings_screen.dart';
-import 'package:remote/tools/tools.dart';
-import 'package:remote/widgets/dark_light_mode_button.dart';
-import 'package:remote/widgets/loading_elevated_button.dart';
-import 'package:remote/widgets/os_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'help_screen.dart';
@@ -18,15 +14,15 @@ class MainDrawer extends ConsumerWidget {
   Widget widgetList(context, WidgetRef ref) {
     final serverSettings = ref.watch(server);
     final serverClass = ref.watch(server.notifier);
-    final settingsObj = ref.watch(settings);
-    final settingsClass = ref.watch(settings.notifier);
+    // final settingsObj = ref.watch(settings);
+    // final settingsClass = ref.watch(settings.notifier);
     return LayoutBuilder(
       builder: (ctx, constraints) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: const EdgeInsets.only(top: 40, bottom: 40),
               child: Column(
                 children: [
                   ShaderMask(
@@ -46,30 +42,6 @@ class MainDrawer extends ConsumerWidget {
                   ),
                   linkText(context, '@ShivanshuKGupta',
                       'https://github.com/ShivanshuKGupta/remote/releases/latest'),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: constraints.maxWidth,
-              child: Wrap(
-                alignment: WrapAlignment.spaceAround,
-                children: [
-                  if (serverSettings != null)
-                    LoadingElevatedButton(
-                      label: const Text("Disconnect"),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        try {
-                          await serverClass.disconnect();
-                        } catch (e) {
-                          showMsg(context, "Error disconnecting");
-                        }
-                        showMsg(context, 'Disconnected');
-                      },
-                      style: IconButton.styleFrom(foregroundColor: Colors.red),
-                      icon: const Icon(Icons.close_rounded),
-                    ),
-                  const DarkLightModeIconButton(),
                 ],
               ),
             ),

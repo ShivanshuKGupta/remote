@@ -31,7 +31,11 @@ class _PcScreenState extends ConsumerState<PcScreen> {
     return (widget.image == null || !ref.watch(settings).receiveImage)
         ? Center(
             child: Text(
-              'Move your finger here to move the mouse',
+              ref.read(settings).scrollMode
+                  ? 'Move your finger here to\nscroll up and down'
+                  : (ref.read(settings).mouseMode
+                      ? "Move your finger here to\nmove the mouse"
+                      : "Mouse mode is off"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge,
             ),

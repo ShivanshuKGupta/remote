@@ -5,7 +5,7 @@ import 'package:remote/providers/remote_buttons.dart';
 import '../providers/server.dart';
 
 class RemoteButtons extends ConsumerWidget {
-  RemoteButtons({super.key});
+  const RemoteButtons({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
