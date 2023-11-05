@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remote/providers/server.dart';
 import 'package:remote/providers/settings.dart';
 import 'package:remote/providers/volume_button_functions.dart';
+import 'package:remote/widgets/select_one.dart';
 
 import '../providers/remote_buttons.dart';
 
@@ -17,24 +18,30 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsInstance = ref.read(settings);
     final settingsClass = ref.read(settings.notifier);
+    const options = {
+      VolumButtonFunctions.leftRight: "Left Right",
+      VolumButtonFunctions.upDown: "Up Down",
+      VolumButtonFunctions.scroll: "Scroll Up Down",
+      VolumButtonFunctions.switchMode: "Toggle Scroll Mode",
+    };
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
       body: ListView(
         children: [
-          SwitchListTile(
-              title: const Text('Dark Mode'),
-              subtitle: Text(
-                'Reduce Glare',
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-              value: ref.watch(settings).darkMode,
-              onChanged: (value) {
-                settingsInstance.darkMode = value;
-                settingsClass.notifyListeners();
-              }),
-          const Divider(),
+          // SwitchListTile(
+          //     title: const Text('Dark Mode'),
+          //     subtitle: Text(
+          //       'Reduce Glare',
+          //       style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          //     ),
+          //     value: ref.watch(settings).darkMode,
+          //     onChanged: (value) {
+          //       settingsInstance.darkMode = value;
+          //       settingsClass.notifyListeners();
+          //     }),
+          // const Divider(),
           SwitchListTile(
               title: const Text('Receive Screenshot'),
               isThreeLine: true,
@@ -64,44 +71,60 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           Padding(
             padding: const EdgeInsets.only(left: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
               children: [
-                Text(
-                  "Volume Button Function",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                DropdownButton(
-                  iconSize: 0,
-                  elevation: 5,
-                  isDense: false,
-                  hint: const Text('Function'),
-                  borderRadius: BorderRadius.circular(20),
-                  value: settingsInstance.volumeButtonFunctions,
-                  items: const <DropdownMenuItem<VolumButtonFunctions>>[
-                    DropdownMenuItem(
-                      value: VolumButtonFunctions.leftRight,
-                      child: Text('Left/Right'),
-                    ),
-                    DropdownMenuItem(
-                      value: VolumButtonFunctions.upDown,
-                      child: Text('Up/Down'),
-                    ),
-                    DropdownMenuItem(
-                      value: VolumButtonFunctions.scroll,
-                      child: Text('Scroll'),
-                    ),
-                    DropdownMenuItem(
-                      value: VolumButtonFunctions.switchMode,
-                      child: Text('Toggle Scroll Mode'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    settingsInstance.volumeButtonFunctions =
-                        value ?? VolumButtonFunctions.leftRight;
+                SelectOne<String>(
+                  expanded: true,
+                  title: "Volume Button Function",
+                  allOptions: options.values.toSet(),
+                  // allOptions: [
+                  //   'Left/Right',
+                  //   'Up/Down',
+                  //   'Scroll',
+                  //   'Toggle Scroll Mode'
+                  // ],
+                  selectedOption:
+                      options[settingsInstance.volumeButtonFunctions],
+                  onChange: (value) {
+                    settingsInstance.volumeButtonFunctions = options.entries
+                        .firstWhere((entry) => entry.value == value)
+                        .key;
                     settingsClass.notifyListeners();
+                    return true;
                   },
                 ),
+                // DropdownButton(
+                //   // icon: const Icon(Icons.arrow_downward_rounded),
+                //   elevation: 5,
+                //   isDense: false,
+                //   hint: const Text('Function'),
+                //   borderRadius: BorderRadius.circular(20),
+                //   value: settingsInstance.volumeButtonFunctions,
+                //   items: const <DropdownMenuItem<VolumButtonFunctions>>[
+                //     DropdownMenuItem(
+                //       value: VolumButtonFunctions.leftRight,
+                //       child: Text('Left/Right'),
+                //     ),
+                //     DropdownMenuItem(
+                //       value: VolumButtonFunctions.upDown,
+                //       child: Text('Up/Down'),
+                //     ),
+                //     DropdownMenuItem(
+                //       value: VolumButtonFunctions.scroll,
+                //       child: Text('Scroll'),
+                //     ),
+                //     DropdownMenuItem(
+                //       value: VolumButtonFunctions.switchMode,
+                //       child: Text('Toggle Scroll Mode'),
+                //     ),
+                //   ],
+                //   onChanged: (value) {
+                //     settingsInstance.volumeButtonFunctions =
+                //         value ?? VolumButtonFunctions.leftRight;
+                //     settingsClass.notifyListeners();
+                //   },
+                // ),
               ],
             ),
           ),
@@ -160,6 +183,7 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _DelaySlider extends StatefulWidget {
   _DelaySlider(
     this.onChange, {

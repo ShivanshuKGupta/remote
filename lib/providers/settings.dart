@@ -13,6 +13,7 @@ class _Settings {
 
   // app settings
   bool darkMode = false;
+  bool autoDarkMode = true;
   String serverAddr = "";
   String portNo = "";
   bool mouseMode = false;
@@ -30,6 +31,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
   String encode() {
     return json.encode({
       "darkMode": state.darkMode,
+      "autoDarkMode": state.autoDarkMode,
       "receiveImage": state.receiveImage,
       "serverAddr": state.serverAddr,
       "portNo": state.portNo,
@@ -57,6 +59,7 @@ class _SettingsProvider extends StateNotifier<_Settings> {
   void decodeAndSet(String setStr) {
     final settings = json.decode(setStr);
     state.darkMode = settings["darkMode"] ?? false;
+    state.autoDarkMode = settings["autoDarkMode"] ?? true;
     state.receiveImage = settings["receiveImage"] ?? false;
     state.serverAddr = settings["serverAddr"] ?? "192.168.";
     state.portNo = settings["portNo"] ?? "8080";

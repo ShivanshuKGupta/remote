@@ -1,99 +1,137 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remote/providers/server.dart';
+import 'package:remote/providers/settings.dart';
 import 'package:remote/screens/customize_buttons.dart';
 import 'package:remote/screens/settings_screen.dart';
+import 'package:remote/tools/tools.dart';
+import 'package:remote/widgets/dark_light_mode_button.dart';
+import 'package:remote/widgets/loading_elevated_button.dart';
 import 'package:remote/widgets/os_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'help_screen.dart';
 
-class MainDrawer extends StatelessWidget {
+class MainDrawer extends ConsumerWidget {
   const MainDrawer({super.key});
 
-  Widget widgetList(context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(40),
-          child: Column(
-            children: [
-              ShaderMask(
-                blendMode: BlendMode.srcATop,
-                shaderCallback: (rect) {
-                  return const LinearGradient(
-                          colors: [Colors.deepPurpleAccent, Colors.blue])
-                      .createShader(rect);
-                },
-                child: Text(
-                  'Remote',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
+  Widget widgetList(context, WidgetRef ref) {
+    final serverSettings = ref.watch(server);
+    final serverClass = ref.watch(server.notifier);
+    final settingsObj = ref.watch(settings);
+    final settingsClass = ref.watch(settings.notifier);
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Column(
+                children: [
+                  ShaderMask(
+                    blendMode: BlendMode.srcATop,
+                    shaderCallback: (rect) {
+                      return const LinearGradient(
+                              colors: [Colors.deepPurpleAccent, Colors.blue])
+                          .createShader(rect);
+                    },
+                    child: Text(
+                      'Remote',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  linkText(context, '@ShivanshuKGupta',
+                      'https://github.com/ShivanshuKGupta/remote/releases/latest'),
+                ],
               ),
-              linkText(context, '@ShivanshuKGupta',
-                  'https://github.com/ShivanshuKGupta/remote/releases/latest'),
-            ],
-          ),
-        ),
-        const Divider(),
-        tile(
-          context,
-          title: "Quick Buttons Bar",
-          subtitle: 'Customize quick buttons bar',
-          icon: Icons.keyboard_alt_rounded,
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const CustomizeQuickButtons(),
+            ),
+            SizedBox(
+              width: constraints.maxWidth,
+              child: Wrap(
+                alignment: WrapAlignment.spaceAround,
+                children: [
+                  if (serverSettings != null)
+                    LoadingElevatedButton(
+                      label: const Text("Disconnect"),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        try {
+                          await serverClass.disconnect();
+                        } catch (e) {
+                          showMsg(context, "Error disconnecting");
+                        }
+                        showMsg(context, 'Disconnected');
+                      },
+                      style: IconButton.styleFrom(foregroundColor: Colors.red),
+                      icon: const Icon(Icons.close_rounded),
+                    ),
+                  const DarkLightModeIconButton(),
+                ],
               ),
-            );
-          },
-        ),
-        tile(
-          context,
-          title: "Other",
-          subtitle: 'Micellaneous Functions',
-          icon: Icons.more_horiz,
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const OsButtons(),
-              ),
-            );
-          },
-        ),
-        tile(
-          context,
-          title: "Settings",
-          icon: Icons.settings_rounded,
-          subtitle: "Customize the app to your needs",
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SettingsScreen(),
-              ),
-            );
-          },
-        ),
-        tile(
-          context,
-          title: "How to use?",
-          icon: Icons.help_rounded,
-          subtitle: "Help on using the app",
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const HelpScreen(),
-              ),
-            );
-          },
-        ),
-      ],
+            ),
+            const Divider(),
+            tile(
+              context,
+              title: "Quick Buttons Bar",
+              subtitle: 'Customize quick buttons bar',
+              icon: Icons.keyboard_alt_rounded,
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const CustomizeQuickButtons(),
+                  ),
+                );
+              },
+            ),
+            tile(
+              context,
+              title: "Other",
+              subtitle: 'Micellaneous Functions',
+              icon: Icons.more_horiz,
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const OsButtons(),
+                  ),
+                );
+              },
+            ),
+            tile(
+              context,
+              title: "Settings",
+              icon: Icons.settings_rounded,
+              subtitle: "Customize the app to your needs",
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  ),
+                );
+              },
+            ),
+            tile(
+              context,
+              title: "How to use?",
+              icon: Icons.help_rounded,
+              subtitle: "Help on using the app",
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const HelpScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -124,7 +162,7 @@ class MainDrawer extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
         Container(
@@ -145,7 +183,7 @@ class MainDrawer extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: widgetList(context),
+                child: widgetList(context, ref),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -16,7 +16,11 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsRef = ref.watch(settings);
-    final bool darkMode = settingsRef.darkMode;
+    final bool darkMode = settingsRef.autoDarkMode
+        ? (MediaQuery.of(context).platformBrightness == Brightness.dark
+            ? true
+            : false)
+        : settingsRef.darkMode;
     final serverRef = ref.watch(server);
     return MaterialApp(
       debugShowCheckedModeBanner: false,

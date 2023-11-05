@@ -31,7 +31,8 @@ class _PcScreenState extends ConsumerState<PcScreen> {
     return (widget.image == null || !ref.watch(settings).receiveImage)
         ? Center(
             child: Text(
-              'Turn on receive image in settings',
+              'Move your finger here to move the mouse',
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           )

@@ -15,74 +15,67 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final serverSettings = ref.watch(server);
+    final serverClass = ref.watch(server.notifier);
+    final settingsObj = ref.watch(settings);
+    final settingsClass = ref.watch(settings.notifier);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0),
-        title: Text(ref.watch(server) == null ? 'Connect to a PC' : '',
+        title: Text(serverSettings == null ? 'Connect to a PC' : '',
             style: Theme.of(context).textTheme.titleLarge),
-        actions: (ref.watch(server) == null)
+        actions: (serverSettings == null)
             ? null
             : [
                 IconButton(
+                  tooltip: 'Show Keyboard',
+                  onPressed: () async {
+                    // SystemChannels.
+                  },
+                  icon: const Icon(Icons.keyboard_alt_rounded),
+                ),
+                IconButton(
                   tooltip: 'Mouse mode',
                   onPressed: () {
-                    ref.read(settings).mouseMode =
-                        !ref.read(settings).mouseMode;
-                    ref.read(settings).scrollMode =
-                        !ref.read(settings).mouseMode
-                            ? false
-                            : ref.read(settings).scrollMode;
+                    settingsObj.mouseMode = !settingsObj.mouseMode;
+                    settingsObj.scrollMode =
+                        !settingsObj.mouseMode ? false : settingsObj.scrollMode;
                     showMsg(context,
-                        "Mouse mode is ${ref.read(settings).mouseMode ? 'on' : 'off'} now");
-                    ref.read(settings.notifier).notifyListeners();
+                        "Mouse mode is ${settingsObj.mouseMode ? 'on' : 'off'} now");
+                    settingsClass.notifyListeners();
                   },
-                  color: ref.watch(settings).mouseMode
+                  color: settingsObj.mouseMode
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.secondary,
-                  icon: Icon(ref.read(settings).mouseMode
+                  icon: Icon(settingsObj.mouseMode
                       ? Icons.mouse_rounded
                       : Icons.mouse_outlined),
                 ),
                 IconButton(
                   tooltip: 'Scroll mode',
                   onPressed: () {
-                    ref.read(settings).scrollMode =
-                        !ref.read(settings).scrollMode;
-                    ref.read(settings).mouseMode = ref.read(settings).scrollMode
-                        ? true
-                        : ref.read(settings).mouseMode;
+                    settingsObj.scrollMode = !settingsObj.scrollMode;
+                    settingsObj.mouseMode =
+                        settingsObj.scrollMode ? true : settingsObj.mouseMode;
                     showMsg(context,
-                        "Scroll mode is ${ref.read(settings).scrollMode ? 'on' : 'off'} now");
-                    ref.read(settings.notifier).notifyListeners();
+                        "Scroll mode is ${settingsObj.scrollMode ? 'on' : 'off'} now");
+                    settingsClass.notifyListeners();
                   },
-                  color: ref.watch(settings).scrollMode
+                  color: settingsObj.scrollMode
                       ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).colorScheme.secondary,
-                  icon: Icon(ref.read(settings).scrollMode
+                  icon: Icon(settingsObj.scrollMode
                       ? Icons.swap_vert_circle
                       : Icons.swap_vert_circle_outlined),
                 ),
-                IconButton(
-                  tooltip: 'Reload Image',
-                  onPressed: () {
-                    ref.read(server.notifier).keyboard('');
-                  },
-                  icon: const Icon(Icons.refresh_rounded),
-                ),
-                IconButton(
-                  tooltip: 'Disconnect',
-                  onPressed: () {
-                    ref.read(server.notifier).disconnect().then((value) {
-                      if (!value) {
-                        showMsg(context, "Error disconnecting");
-                        return;
-                      }
-                      showMsg(context, 'Disconnected');
-                    });
-                  },
-                  color: Colors.red,
-                  icon: const Icon(Icons.close_rounded),
-                ),
+                if (settingsObj.receiveImage)
+                  IconButton(
+                    tooltip: 'Reload Image',
+                    onPressed: () {
+                      serverClass.keyboard('');
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                  ),
               ],
       ),
       drawer: const Drawer(child: MainDrawer()),
@@ -102,7 +95,7 @@ class HomeScreen extends ConsumerWidget {
               });
         },
       ),
-      body: ref.watch(server) == null
+      body: serverSettings == null
           ? const ServerScreen()
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -118,8 +111,17 @@ class HomeScreen extends ConsumerWidget {
                         right: 0,
                         child: PcScreen(),
                       ),
-                      const TouchPad(),
+                      if (settingsObj.mouseMode) const TouchPad(),
                     ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Open Keyboard',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ],
