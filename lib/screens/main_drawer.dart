@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remote/providers/server.dart';
 import 'package:remote/screens/customize_buttons.dart';
 import 'package:remote/screens/os_buttons.dart';
 import 'package:remote/screens/settings_screen.dart';
@@ -12,8 +11,8 @@ class MainDrawer extends ConsumerWidget {
   const MainDrawer({super.key});
 
   Widget widgetList(context, WidgetRef ref) {
-    final serverSettings = ref.watch(server);
-    final serverClass = ref.watch(server.notifier);
+    // final serverSettings = ref.watch(server);
+    // final serverClass = ref.watch(server.notifier);
     // final settingsObj = ref.watch(settings);
     // final settingsClass = ref.watch(settings.notifier);
     return LayoutBuilder(

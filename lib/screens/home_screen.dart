@@ -191,7 +191,6 @@ class _HomeScreenState extends ConsumerState {
                       maxLines: null,
                       controller: _textEditingController,
                       onChanged: (txt) {
-                        print(txt);
                         for (final ch in txt.characters) {
                           serverClass.keyboard(ch);
                         }

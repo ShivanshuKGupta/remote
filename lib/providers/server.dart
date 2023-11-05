@@ -15,7 +15,7 @@ class _Server extends StateNotifier<Socket?> {
     if (state != null) disconnect();
     try {
       await Socket.connect(addr, int.parse(portNo)).then((value) {
-        print("Connection to $addr successful.");
+        debugPrint("Connection to $addr successful.");
         state = value;
         state!.listen((Uint8List data) {
           if (data.isEmpty) return;
@@ -42,7 +42,7 @@ class _Server extends StateNotifier<Socket?> {
         return true;
       });
     } catch (e) {
-      print('connection error: $e');
+      debugPrint('connection error: $e');
       state = null;
       return false;
     }
@@ -54,10 +54,10 @@ class _Server extends StateNotifier<Socket?> {
     try {
       state?.listen((List<int> data) {
         message = String.fromCharCodes(data);
-        print('Received: $message');
+        debugPrint('Received: $message');
       });
     } catch (e) {
-      print('Error receiving from server: $e');
+      debugPrint('Error receiving from server: $e');
     }
     return message;
   }
@@ -74,7 +74,7 @@ class _Server extends StateNotifier<Socket?> {
     try {
       state?.write(message);
     } catch (e) {
-      print('Error sending to server: $e');
+      debugPrint('Error sending to server: $e');
       return false;
     }
     return true;
