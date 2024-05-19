@@ -48,7 +48,7 @@ class _HomeScreenState extends ConsumerState {
                   yes: true,
                   no: true,
                 );
-                if (response != "yes") return;
+                if (response != "yes") Navigator.of(context).pop();
                 try {
                   await serverClass.disconnect();
                 } catch (e) {

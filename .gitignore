@@ -31,7 +31,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-
+/lib/python/.venv/
+/lib/python/__pycache__/
 # Symbolication related
 app.*.symbols
 

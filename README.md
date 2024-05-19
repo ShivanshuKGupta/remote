@@ -2,20 +2,32 @@
 
 Flutter app that serves as a remote control for your laptop. Before getting started, please make sure you have Python installed on your machine.
 
-## Getting Started
+## Installation Steps
 
 To set up the app, follow these steps:
 
 1. Go to the following link: [https://github.com/shivanshukgupta/remote/releases/latest](https://github.com/shivanshukgupta/remote/releases/latest)
 2. Download the `remote-server.zip` file and extract its contents.
-3. Run `check_dependencies.bat` on your Windows machine to install all the required Python dependencies.
+3. Run `runMe.bat` on your Windows machine to start the server, it may install some required Python dependencies.
 4. Additionally, download the `remote.apk` file from the same link and install it on your Android device.
 
-To establish a connection, ensure that your phone and PC are connected to the same Wi-Fi network. You can also use a personal hotspot if desired.
+To establish a connection, ensure that your phone and PC are connected to the same Wi-Fi network. You can also use personal hotspot if desired.
 
-Next, run the `main.py` script to start the server. Take note of the IP address and port number displayed on the screen.
+## Usage
 
-In the app, enter the IP address and port number shown on the screen, and click "Connect." This will establish a connection between your phone and PC.
+1. Run the `runMe.bat` script to start the server if not done already.
+2. Connect your PC automatically or manually by following the steps below.
+
+### Automatic Connection
+
+1. As soon as your phone app opens up, you will see a screen where you can find your pc's name on it (ensure that your pc and phone are on the same wifi and you pc has the server running).
+2. Click on your device to connect.
+
+### Manual Connection
+
+1. Take note of the IP address and port number displayed on the PC screen.
+2. In the app, click the ```Connect Manually``` button.
+3. Enter the IP address and port number shown on the PC screen, and click "Connect" in the app. This will establish a connection between your phone and PC.
 
 Once connected, you can use your phone as a remote control for your laptop. The app provides various functionalities, including mouse control, screen scrolling, keyboard control and screenshot feedback.
 
