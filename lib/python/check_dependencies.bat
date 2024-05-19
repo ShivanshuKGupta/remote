@@ -18,6 +18,7 @@ if errorlevel 1 (
 
     echo Installing Python...
     choco install python -y
+	set "dependencyInstalled=1"
 )
 
 echo Checking for mss and pyautogui packages...
@@ -25,12 +26,15 @@ python -c "import mss" >nul 2>&1
 if errorlevel 1 (
     echo Installing mss package...
     pip install mss
+	set "dependencyInstalled=1"
 )
 
 python -c "import pyautogui" >nul 2>&1
 if errorlevel 1 (
     echo Installing pyautogui package...
     pip install pyautogui
+	set "dependencyInstalled=1"
 )
 
 echo Done.
+exit /b %dependencyInstalled%
