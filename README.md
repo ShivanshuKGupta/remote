@@ -7,12 +7,13 @@ Flutter app that serves as a remote control for your laptop. Before getting star
 <p align="center">
 <img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_1.png">
 </p>
+<br>
 <p align="center">
 <img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_2.png">
-</p>
+</p><br>
 <p align="center">
 <img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_3.png">
-</p>
+</p><br>
 <p align="center">
 <img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_4.png">
 </p>
