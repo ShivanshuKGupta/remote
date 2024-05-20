@@ -2,23 +2,19 @@
 
 Flutter app that serves as a remote control for your laptop. Before getting started, please make sure you have Python installed on your machine.
 
-# Screenshots
+## Screenshots
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_1.jpg" height="500">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_2.jpg" height="500">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_3.jpg" height="500">
+<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_1.png">
 </p>
-
 <p align="center">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_4.jpg" height="500">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_5.jpg" height="500">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_6.jpg" height="500">
+<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_2.png">
 </p>
-
 <p align="center">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_7.jpg" height="500">
-<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_8.jpg" height="500">
+<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_3.png">
+</p>
+<p align="center">
+<img src="https://raw.githubusercontent.com/ShivanshuKGupta/remote/master/screenshots/ss_4.png">
 </p>
 
 ## Installation Steps
